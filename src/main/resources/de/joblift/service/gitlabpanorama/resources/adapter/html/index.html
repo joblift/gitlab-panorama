@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>GitLab panorama</title>
+
+	<!-- Suppress browser request for favicon.ico -->
+	<link id="favicon" rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
+
+	<!-- development version, includes helpful console warnings -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!-- production version, optimized for size and speed -->
+	<!-- script src="https://cdn.jsdelivr.net/npm/vue"></script -->
+
+	<style>
+* {
+	margin: 0;
+ 	padding: 0;
+ 	font-family: Roboto Mono,monospace;
+	color: #E6E6E6;
+}
+html, body {
+	background-color: #0a0a0a;
+}
+#app {
+}
+#pipeline-container {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 14pt;
+	text-align: center;
+	justify-content: center;
+}
+.pipeline {
+	padding: 4px 4px 4px 4px;
+	margin: 4px;
+	border-radius: 4px;
+	flex: 1 1 auto;
+}
+.failed {
+	background-color: #e24329;
+}
+.success {
+	background-color: #1aaa55;
+}
+.canceled {
+	background-color: #7F7F7F;
+}
+/* Only for new pipelines */ 
+.running {
+	background-color: #4286f4;
+}
+.skipped {
+	background-color: #ABADAE;
+}
+.ref {
+	opacity: .4;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	color:#FEFEFE;
+}
+#error {
+	height: 40%;
+	width: 100%;
+}
+#error>div{
+	color: #FCFCFC;
+	font-size: 24pt;
+	border-radius: 4px;
+	background-color: #C31E00;
+	padding: 16px;
+	margin: 16px;
+	padding: 16px;
+	text-align: center;
+}
+#emptyPipelines {
+	text-align: center;
+	width: 100%;
+	position: absolute;
+	top: 30%;
+	color:#FCFCFC;
+	font-size: 200pt;
+}
+
+.loading {
+	-webkit-animation: rotation 2s infinite linear;
+	display: inline-block;
+}
+@-webkit-keyframes rotation {
+	from { -webkit-transform: rotate(0deg); }
+	to { -webkit-transform: rotate(359deg); }
+}
+	</style>
+
+</head>
+
+<body>
+	<div id="app">
+		<div id="error" v-if="error"><div>{{ errorMessage }}</div></div>
+		<div id="emptyPipelines" v-if="emptyPipelines"><p>☮️</p></div>
+
+		<div id="pipeline-container">
+			<div class="pipeline" v-for="pipeline in pipelines" v-bind:class="{ [pipeline.status]: true }">
+				<p class="repo">
+					<span v-if="pipeline.running" class="loading"><a :href="pipeline.active.url" rel="noopener noreferrer">&#x262f;</a></span>
+					<span v-if="pipeline.current == null">{{ pipeline.name }}</span>
+					<span v-if="pipeline.current != null"><a :href="pipeline.current.url" rel="noopener noreferrer">{{ pipeline.name }}</a></span>
+				</p>
+				<p class="ref">{{ pipeline.ref }}</p>
+			</div>
+		</div>
+	</div>
+
+<script>
+
+var iconGreen = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB9UlEQVRYhcXXO2gUURSH8d9egohVCBLBQoLdgISggoVPCEGLNLZTiliIIlYWt7DQQVAEK0GwUljBzkYssoq9SorABsEYQggWIiFFCFuIxeyENYlksu7u/Lt5MN83Zx73nJqSqTezIZzBFI7jKIYRsIZFzOIDZtIkbpS5bq0E+CBu4ioOl/RdxQs8SpO43JVAvZkFXMc9+Z12kw08RJYmsVVaoN7MhvEKl7oEb80XXE6TuLSrQL2ZjaKBYz2CF1nGVJrE+X8KtO/8I8Z7DC+ygtNpEheLHaEDHvCyj3Dyl/hNvZnt3yaAa5juI7zIOO4WGzU2S/8NIwMQgBaSNIkLRQVuDBAO+3AHau1n/x1HBigA6zgUcLICOBzAdMCFCuBFJgNOVCgwETBWocBY0P1C04sMhd3P6W+KZqKqtIK8k6kqSwGfKxSYDXhfoUAj4JNqHsM63oY0ib/xrAKB12kS14rP8Cl+DhDewgPaDUmaxDXEAQo8SZP4dVOgned4NwD4nK0dUZF6MxuRN6W97oiLrOBsmsSFYsdfv+I0ib/ko9dcn+CTnfBtAm2JHziPmR7CZ+Xt+PzWAzsuRu1KXMQt/7dWbOA+TnXOAp0pM5yO4jauYLQkuBhOH+80ju1JoENkCOfk78iEfDwfkVdxFUvyUjfsYTz/AyNDf+XwTOOTAAAAAElFTkSuQmCC";
+var iconRed = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABm0lEQVRYhcXXPWsUURjF8d9cliAWEhaJCiLBQiyDWooIYufnEItgay0WwdLSr2BrYaHRTxBMSC1KZAuR4EuRqIWPxcwtXHfdGXZeDpxumf/ZO/feOU+hpoIRruM2ruAiVpHwHR+wizd4VfCj7rMXgU8HD4NJEDX9JXgSnF8GnILN6mF1wdM+rsKvNIWvBi+WAE97J7hQF74W7LcIz/4YXK7zz/c6gGdPgvX/vfPnHcKz94ITswLc6wGevTVr6Q97DPAzyntEqjJsYlxrl7ajFTyAIsoQ79U9Ju3pCGcSrg0Ah5O4k3BzAHjWrYSrAwbYSOZdDP1oPSk/qUNplBb/plvlMjGUfiVlkxlKBwk7AwbYTXg9YIDtfBW/0/9xPMK5VPAbT3uGw7MiH4DgVPC558/xpb/iBHd7DPD4n/WIspK12YTneT9mVbIqxDi6acTZk9yE5io421GISSyq5VMr8bJF+NtoesyrPXE/+LYE+Dh4FE1Hs6kga8FW8KkBOA+nC6te0SDICDeU4/mGcjONlTfpVxwox/NtDcbzPwZJAshPq8kNAAAAAElFTkSuQmCC";
+
+var app = new Vue({
+	el: '#app',
+	data: {
+		filterStatus: [],
+		onlyRefs: [],
+		pipelines: null,
+		sort: "alphabetically",
+		error: false,
+		errorMessage: null
+	},
+
+	created: function() {
+		// parse query params
+		let params = new URLSearchParams(window.location.search);
+
+		let paramFilterStatus = params.get("filterStatus");
+		if (paramFilterStatus) {
+			this.filterStatus = paramFilterStatus.split(",");
+		}
+
+		let paramOnlyRefs = params.get("onlyRefs");
+		if (paramOnlyRefs) {
+			this.onlyRefs = paramOnlyRefs.split(",");
+		}
+
+		let paramSort = params.get("sort");
+		if (paramSort) {
+			this.sort = paramSort;
+		}
+
+		this.fetchPipelines();
+		this.timer = setInterval(this.fetchPipelines, 5000);
+	},
+
+	watch: {
+		pipelines: function() {
+			this.updateFavicon();
+		},
+		error: function() {
+			this.updateFavicon();
+		}
+	},
+
+	methods: {
+		fetchPipelines: async function() {
+			try {
+				const response = await fetch('json');
+				const pipelines = await response.json();
+				var result = [];
+				for (let pipeline of pipelines) {
+					let pass = true;
+					if (this.filterStatus.includes(pipeline.status)) {
+						pass = false;
+					}
+					if ((this.onlyRefs.length != 0) && !this.onlyRefs.includes(pipeline.ref)) {
+						pass = false;
+					}
+					if (pass) {
+						result.push(pipeline);
+					}
+				}
+				if (this.sort == "importance") {
+					result.sort((a, b) => a.status.localeCompare(b.status));
+				}
+				this.pipelines = result;
+				this.error = false;				
+			}
+			catch(err) {
+				this.errorMessage = "Unable to retrieve data (" + err + ")";
+				this.error = true;
+			}
+		},
+
+		cancelAutoUpdate: function() {
+			clearInterval(this.timer);
+		},
+
+		updateFavicon: function() {
+			var favicon = document.getElementById("favicon");
+			var selectedIcon = (!this.error && this.healthyPipelines()) ? iconGreen : iconRed;
+			favicon.href = "data:image/png;base64," + selectedIcon;
+		},
+
+		arePipelinesEmpty: function() {
+			return this.pipelines != null && this.pipelines.length == 0;
+		},
+
+		healthyPipelines: function() {
+			if (!this.arePipelinesEmpty()) {
+				for (let pipeline of this.pipelines) {
+					if (pipeline.status == "error") {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+	},
+
+	computed: {
+		emptyPipelines: function() {
+			return this.arePipelinesEmpty();
+		}
+	},
+
+	beforeDestroy() {
+		clearInterval(this.timer);
+	}
+
+});
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+<FindBugsFilter>
+	<!-- Match Immutables (eg. NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION, RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE) -->
+	<Match>
+		 <Class name="~.*\.(Modifiable|Immutable)[a-zA-Z0-9]+" />
+	</Match>
+	<Match>
+		<!-- REC: Exception is caught when Exception is not thrown. (Does not work with try-with-resource - http://sourceforge.net/p/findbugs/bugs/1230/ (even if marked as fixed)) -->
+		<Bug code="RV,EI,EI2,REC" />
+	</Match>
+</FindBugsFilter>

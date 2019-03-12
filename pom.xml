@@ -1,0 +1,225 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.joblift</groupId>
+	<artifactId>gitlab-panorama</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>gitlab-panorama</name>
+	<description>Overview and hub for GitLab pipeline states</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jdk.compiler.version>1.8</jdk.compiler.version>
+		<version.spring>2.1.1.RELEASE</version.spring>
+		<library.junit-jupiter.version>5.3.1</library.junit-jupiter.version>
+		<library.junit-platform.version>1.3.1</library.junit-platform.version>
+		<library.checkstyle.version>8.15</library.checkstyle.version>
+		<plugin.checkstyle.version>3.0.0</plugin.checkstyle.version>
+	</properties>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.1.RELEASE</version>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>de.galan</groupId>
+			<artifactId>commons</artifactId>
+			<version>0.16.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.fusesource.jansi</groupId>
+			<artifactId>jansi</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test-autoconfigure</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-runner</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Import dependency management from Spring Boot -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${version.spring}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<finalName>application</finalName>
+		<plugins>
+			<!-- Package as an executable jar -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${jdk.compiler.version}</source>
+					<target>${jdk.compiler.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${plugin.checkstyle.version}</version>
+				<executions>
+					<execution>
+						<id>checkstyle</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<sourceDirectories>
+								<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+							</sourceDirectories>
+							<testSourceDirectories>
+								<testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
+							</testSourceDirectories>
+							<configLocation>checkstyle.xml</configLocation>
+							<includeTestSourceDirectory>true</includeTestSourceDirectory>
+							<failsOnError>true</failsOnError>
+							<consoleOutput>true</consoleOutput>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>${library.checkstyle.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- building with latest maven docker image in gitlab dind fails otherwise -->
+					<useSystemClassLoader>false</useSystemClassLoader>
+					<properties>
+						<includeTags>${includeTags}</includeTags>
+						<excludeTags>${excludeTags}</excludeTags>
+					</properties>
+					<useFile>false</useFile>
+					<includes>
+						<include>**/*Test.class</include>
+					</includes>
+					<threadCount>1</threadCount>
+				</configuration>
+			</plugin>
+
+
+			<!-- let the build fail if cyclic dependencies are found -->
+			<plugin>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<!-- <version>1.4.1</version> -->
+				<dependencies>
+					<dependency>
+						<groupId>de.andrena.tools.nopackagecycles</groupId>
+						<artifactId>no-package-cycles-enforcer-rule</artifactId>
+						<version>1.0.9</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>enforce-no-package-cycles</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<phase>test</phase>
+						<configuration>
+							<rules>
+								<NoPackageCyclesRule implementation="de.andrena.tools.nopackagecycles.NoPackageCyclesRule">
+									<includeTests>false</includeTests>
+								</NoPackageCyclesRule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

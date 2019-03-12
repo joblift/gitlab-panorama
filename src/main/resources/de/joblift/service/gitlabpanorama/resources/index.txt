@@ -1,0 +1,14 @@
+
+GitLab panorama
+===============
+
+Adapter
+* Bashboard
+  To be used within a shell and the script: <code>watch --color -t 'curl -s "<host>/api/adapter/shell"'</code></li>
+* ccmenu - api/adapter/ccmenu
+* html - api/adapter/html
+* json - api/adapter/json
+* prometheus - api/adapter/prometheus
+
+Check the GitLab panorama website for more information.
+

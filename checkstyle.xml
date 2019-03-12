@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.1//EN" "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
+
+<module name="Checker">
+
+	<module name="TreeWalker">
+		<!-- Naming Conventions -->
+		<module name="ConstantName">
+			<property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*)$" />
+		</module>
+		<module name="LocalFinalVariableName" />
+		<module name="LocalVariableName" />
+		<module name="MemberName" />
+		<module name="PackageName" />
+		<module name="StaticVariableName" />
+		<module name="TypeName" />
+		<module name="MethodName" />
+
+		<!-- Imports -->
+		<module name="IllegalImport">
+			<property name="illegalPkgs" value="sun, com.sun, org.apache.logging.log4j.util, org.assertj.core.util.Strings, org.assertj.core.util.Lists" />
+		</module>
+
+		<module name="UpperEll" />
+		<module name="UnusedImports" />
+		<module name="AvoidStarImport">
+			<property name="allowStaticMemberImports" value="true" />
+		</module>
+
+		<!-- Coding -->
+		<module name="EmptyStatement" />
+		<module name="EmptyBlock">
+			<property name="option" value="text" />
+		</module>
+		<module name="HiddenField">
+			<property name="tokens" value="VARIABLE_DEF" />
+		</module>
+		<module name="EmptyCatchBlock">
+			<property name="exceptionVariableName" value="expected|ignore" />
+		</module>
+		<!-- <module name="ParameterAssignment" /> -->
+
+		<!-- <module name="MissingSwitchDefault"/> -->
+		<module name="SimplifyBooleanExpression" />
+		<module name="SimplifyBooleanReturn" />
+		<module name="StringLiteralEquality" />
+		<module name="PackageDeclaration" />
+		<module name="MultipleVariableDeclarations" />
+		<module name="NeedBraces" />
+
+		<!-- Documentation -->
+		<!-- <module name="JavadocType" /> -->
+		<!-- <module name="UncommentedMain"/> -->
+		<module name="SuppressionCommentFilter" />
+
+		<!-- Class Design -->
+		<module name="FinalClass" />
+		<!-- <module name="HideUtilityClassConstructor"/> -->
+
+		<!-- Misc -->
+		<module name="Regexp">
+			<property name="illegalPattern" value="true" />
+			<property name="format" value="(System\.(out|err))|(printStackTrace\(\))" />
+		</module>
+		<module name="Regexp">
+			<property name="illegalPattern" value="true" />
+			<property name="format" value="(new Long\(|new Float\(|new Integer\(|new Double\()" />
+		</module>
+		<module name="Regexp">
+			<property name="illegalPattern" value="true" />
+			<property name="format" value="(import .+\.repackaged\..+;)" />
+		</module>
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="^ +[^*]" />
+			<property name="message" value="Indent must use tab characters" />
+			<property name="ignoreComments" value="true" />
+		</module>
+	</module>
+</module>

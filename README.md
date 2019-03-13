@@ -8,8 +8,10 @@ This project is intended to be used as hub for your team, therefore you only hav
 
 The project is available as docker image:
 ```
-docker ... TODO
+docker run --rm -it -p 8080:8080 -e "GITLAB_TOKEN=<your api token>" joblift/gitlab-panorama:latest
 ```
+
+A healthcheck for liveness or readiness probes is available at `/ping`.
 
 # Configuration
 
@@ -108,13 +110,6 @@ Actually only used by the html endpoint.
 Endpoint: `/api/adapter/prometheus`
 
 Can be used as exporter from a prometheus scraper.
-
-# Roadmap
-- sort by latest change
-- time in dashboard
-- label-filter
-- AsyncEventBus?
-- slack integration?
 
 ### Disclamer
 GitLab is a registered trademark of GitLab, Inc. The [GitLab logo](https://about.gitlab.com/handbook/marketing/corporate-marketing/#gitlab-trademark--logo-guidelines) is subject to the terms of the Creative Commons Attribution Non-Commercial ShareAlike 4.0 International License.

@@ -210,7 +210,7 @@ var app = new Vue({
 		healthyPipelines: function() {
 			if (!this.arePipelinesEmpty()) {
 				for (let pipeline of this.pipelines) {
-					if (pipeline.status == "error") {
+					if (pipeline.status == "failed") {
 						return false;
 					}
 				}

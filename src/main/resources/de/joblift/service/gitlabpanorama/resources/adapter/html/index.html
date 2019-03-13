@@ -166,7 +166,7 @@ var app = new Vue({
 	methods: {
 		fetchPipelines: async function() {
 			try {
-				const response = await fetch('json');
+				const response = await fetch('json', {credentials: "same-origin"});
 				const pipelines = await response.json();
 				var result = [];
 				for (let pipeline of pipelines) {

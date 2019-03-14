@@ -10,5 +10,5 @@ Adapter
 * json - api/adapter/json
 * prometheus - api/adapter/prometheus
 
-Check the GitLab panorama website for more information.
+Check the GitLab panorama website for more information: https://github.com/joblift/gitlab-panorama
 

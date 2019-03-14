@@ -77,13 +77,13 @@ Screenshot (with obfuscated project names):
 
 ![html screenshot 01](media/screenshot-html-01.png)
 
-## bash
-Endpoint: `/api/adapter/bash`
+## shell
+Endpoint: `/api/adapter/shell`
 
 Displays the state of the pipelines as shell-compatible screen. Best used with `watch` to update the screen:
 
 ```
-watch --color -t 'curl -s "<host>/api/adapter/bash"'
+watch --color -t 'curl -s "<host>/api/adapter/shell"'
 ```
 
 Supported parameter:
@@ -110,6 +110,15 @@ Actually only used by the html endpoint.
 Endpoint: `/api/adapter/prometheus`
 
 Can be used as exporter from a prometheus scraper.
+
+# Other projects
+Projects that could be used in conjunction to GitLab panorama to visualize, notify or analyze the outputs from the service:
+
+* [BuildNotify](https://anaynayak.github.io/buildnotify) - CCMenu/CCTray equivalent for Ubuntu
+* [Nevergreen](https://nevergreen.io) - Alternative ccmenu build monitor
+* [ccmenu](http://ccmenu.org/) - ccmenu for the Mac OS menu bar
+* [Prometheus](https://prometheus.io/) - metric alerts and monitoring solution
+
 
 ### Disclamer
 GitLab is a registered trademark of GitLab, Inc. The [GitLab logo](https://about.gitlab.com/handbook/marketing/corporate-marketing/#gitlab-trademark--logo-guidelines) is subject to the terms of the Creative Commons Attribution Non-Commercial ShareAlike 4.0 International License.

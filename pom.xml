@@ -14,7 +14,7 @@
 		<version.spring>2.1.1.RELEASE</version.spring>
 		<library.junit-jupiter.version>5.3.1</library.junit-jupiter.version>
 		<library.junit-platform.version>1.3.1</library.junit-platform.version>
-		<library.checkstyle.version>8.15</library.checkstyle.version>
+		<library.checkstyle.version>8.18</library.checkstyle.version>
 		<plugin.checkstyle.version>3.0.0</plugin.checkstyle.version>
 	</properties>
 	<parent>

@@ -1,8 +1,8 @@
 ![GitLab panorama](media/gitlab-panorama-02-256x142.png)
 
-This project aims to visualize the latest pipeline for every each branch in every repository in various output-formats. Output-formats currently available are: ccmenu, html, json, bash and prometheus (See adapter below for screenshots). The queried repositories and branches can be configuried using whitelist/blacklist and regular expressions.
+This project aims to visualize the latest pipeline for all branches in every repository in various output-formats. Output-formats currently available are: ccmenu, html, json, bash and prometheus (See adapter below for screenshots). The queried repositories and branches can be configuried using whitelist/blacklist and regular expressions.
 
-This project is intended to be used as hub for your team, therefore you only have to configure a single token once. After setup it retrieves all future updates by using a webhook. The service queries the pipeline-states only once at the beginning. This is the biggest difference to other gitlab-pipeline-monitors out there and makes especially sense if you have a large amount of project (where you easily end up having thousands of requests to the gitlab api .. per client, requesting over and over again, running into throtteling). In contrast GitLab-panoramas response-times for the pipeline-states are lightning fast, because the current state is always in memory.
+This project is intended to be used as hub for your team, therefore you only have to configure a single token once. After setup GitLab panorama retrieves all future updates by using a webhook. The service queries the pipeline-states only once at the beginning. This is the biggest difference to other gitlab-pipeline-monitors out there and makes especially sense if you have a large amount of project (where you easily end up having thousands of requests to the gitlab api .. per client, requesting over and over again, running into throtteling). In contrast GitLab-panoramas response-times for the pipeline-states are lightning fast, because the current state is always up-to-date and comes from memory.
 
 # Installation
 
@@ -18,11 +18,11 @@ A healthcheck for liveness or readiness probes is available at `/ping`.
 GitLab panorama will be configured by using environment-variables, Java system properties or yaml file.
 The easiest (and recommended way) is to use environment-variables when panorama is started as Docker container.
 
-Also it is required to setup a Webhook in your Gitlab instance in order to get pipeline updates.
+It is required to setup a Webhook in your Gitlab instance in order to get pipeline updates.
 
 ## Gitlab Webhook
 
-You have to define a webhook with the Triggers `Push events` and `Pipeline Events`. Also it is recommended to use ssl (`Enable SSL verification`), and utilize the `Secret Token`.
+You have to define a webhook with the triggers `Push events` and `Pipeline Events`. Also it is recommended to use ssl (`Enable SSL verification`), and utilize the `Secret Token`.
 There are two options where to setup the webhook:
 
 * For each required project (Gitlab free/core) within `settings / integrations`. See a [screenshot](media/screenshot-gitlab-webhook.png).
@@ -122,3 +122,4 @@ Projects that could be used in conjunction to GitLab panorama to visualize, noti
 
 ### Disclamer
 GitLab is a registered trademark of GitLab, Inc. The [GitLab logo](https://about.gitlab.com/handbook/marketing/corporate-marketing/#gitlab-trademark--logo-guidelines) is subject to the terms of the Creative Commons Attribution Non-Commercial ShareAlike 4.0 International License.
+

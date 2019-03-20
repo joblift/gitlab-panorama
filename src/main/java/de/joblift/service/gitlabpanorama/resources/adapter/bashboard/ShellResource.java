@@ -70,7 +70,7 @@ public class ShellResource {
 
 	private boolean matches(PipelinePair pair, List<Status> filterStatusList) {
 		if (!filterStatusList.isEmpty() && pair.getCurrent() != null) {
-			return filterStatusList.contains(pair.getCurrent().getStatus());
+			return !filterStatusList.contains(pair.getCurrent().getStatus());
 		}
 		return true;
 	}

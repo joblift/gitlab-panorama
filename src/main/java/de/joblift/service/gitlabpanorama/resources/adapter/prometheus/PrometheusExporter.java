@@ -29,8 +29,25 @@ public class PrometheusExporter {
 		List<PipelinePair> pipelines = aggregator.getPipelines();
 		return pipelines.stream()
 			.filter(pair -> pair.getCurrent() != null)
-			.map(pair -> "gitlab_pipeline_state{repository=\"" + pair.getName() + "\",ref=\"" + pair.getRef() + "\"} " + pair.getCurrent().getStatus())
+			.map(pair -> "gitlab_pipeline_state{repository=\"" + pair.getName() + "\",ref=\"" + pair.getRef() + "\",state=\"" + pair.getCurrent().getStatus()
+					+ "\"} " + stateToValue(pair))
 			.collect(Collectors.joining("\n"));
+	}
+
+
+	protected String stateToValue(PipelinePair pair) {
+		switch (pair.getCurrent().getStatus()) {
+			case success:
+				return "0";
+			case skipped:
+				return "1";
+			case canceled:
+				return "2";
+			case failed:
+				return "10";
+			default:
+				return "-1";
+		}
 	}
 
 }

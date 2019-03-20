@@ -37,63 +37,6 @@ public class PipelinePair {
 		if ((active != null && current != null) && (current.getId() > active.getId() || current.latestChange().isAfter(active.latestChange()))) {
 			active = null;
 		}
-
-		/*
-		List<Pipeline> collected = Arrays.asList(pipelines).stream()
-			.collect(groupingBy(Pipeline::getStatus,
-				collectingAndThen(maxBy((p1, p2) ->  p1.getId().compareTo(p2.getId())),
-					Optional::get)))
-			.values().stream().collect(toList());
-		
-		for (Pipeline pipeline : collected) {
-			if (pipeline.hasActivity()) {
-				if (active == null || pipeline.latestChange().isAfter(active.latestChange())) {
-					active = pipeline;
-				}
-			}
-			else {
-				if (current == null || pipeline.latestChange().isAfter(current.latestChange())) {
-					current = pipeline;
-				}
-			}
-		}
-		if ((active != null && current != null) && (current.getId() > active.getId() || current.latestChange().isAfter(active.latestChange()))) {
-			active = null;
-		}
-		*/
-
-		/*
-
-		// different algo: sort by id
-		// use largest id that is not active as current
-		// use largest id that is active as active
-
-		//List<Pipeline> p = Arrays.asList(pipelines);
-		//p.sort(Comparator.comparingLong(Pipeline::id));
-
-		for (Pipeline pipeline : pipelines) {
-			if (pipeline.hasActivity()) {
-				if (active == null) {
-					active = pipeline;
-				}
-				else {
-					if (pipeline.getId() > active.getId()) {
-						active = pipeline;
-					}
-				}
-			}
-			else {
-				if (current == null) {
-					current = pipeline;
-				}
-				else {
-					if (pipeline.getId() > current.getId()) {
-						current = pipeline;
-					}
-				}
-			}
-		}
-		*/
 	}
 
 

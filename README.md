@@ -109,7 +109,14 @@ Actually only used by the html endpoint.
 ## prometheus
 Endpoint: `/api/adapter/prometheus`
 
-Can be used as exporter from a prometheus scraper.
+Can be used as exporter from a prometheus scraper. Return values are: success=0, skipped=1, canceled=2, failed=10. 
+
+Examples:
+
+```
+gitlab_pipeline_state{repository="hubble",ref="master",state="success"} 0
+gitlab_pipeline_state{repository="hubble",ref="task/lens",state="failed"} 10
+```
 
 # Other projects
 Projects that could be used in conjunction to GitLab panorama to visualize, notify or analyze the outputs from the service:

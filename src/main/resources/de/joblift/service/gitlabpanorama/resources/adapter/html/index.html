@@ -14,14 +14,24 @@
 	<!-- script src="https://cdn.jsdelivr.net/npm/vue"></script -->
 
 	<style>
+:root {
+	--color-text: #E6E6E6;
+	--color-text-hover: #FEFEFE;
+	--color-background: #0a0a0a;
+	--color-pipeline-failed: #e24329;
+	--color-pipeline-success: #1aaa55;
+	--color-pipeline-canceled: #7F7F7F;
+	--color-pipeline-skipped: #ABADAE;
+}
+
 * {
 	margin: 0;
  	padding: 0;
  	font-family: Roboto Mono,monospace;
-	color: #E6E6E6;
+	color: var(--color-text);
 }
 html, body {
-	background-color: #0a0a0a;
+	background-color: var(--color-background);
 }
 #app {
 }
@@ -38,21 +48,35 @@ html, body {
 	border-radius: 4px;
 	flex: 1 1 auto;
 }
+
+.active {
+	background: repeating-linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.0),
+		rgba(255, 255, 255, 0.0) 10px,
+		rgba(255, 255, 255, 0.25) 10px,
+		rgba(255, 255, 255, 0.25) 20px
+	);
+	background-size: 226px;
+	animation: active 10s linear infinite;
+}
+@keyframes active {
+	100% {
+		background-position: 112px 0px;
+	}
+}
+
 .failed {
-	background-color: #e24329;
+	background-color: var(--color-pipeline-failed);
 }
 .success {
-	background-color: #1aaa55;
+	background-color: var(--color-pipeline-success);
 }
 .canceled {
-	background-color: #7F7F7F;
-}
-/* Only for new pipelines */ 
-.running {
-	background-color: #4286f4;
+	background-color: var(--color-pipeline-canceled);
 }
 .skipped {
-	background-color: #ABADAE;
+	background-color: var(--color-pipeline-skipped);
 }
 .ref {
 	opacity: .4;
@@ -61,7 +85,7 @@ a {
 	text-decoration: none;
 }
 a:hover {
-	color:#FEFEFE;
+	color: var(--color-text-hover);
 }
 #error {
 	height: 40%;
@@ -82,17 +106,8 @@ a:hover {
 	width: 100%;
 	position: absolute;
 	top: 30%;
-	color:#FCFCFC;
+	color: #FCFCFC;
 	font-size: 200pt;
-}
-
-.loading {
-	-webkit-animation: rotation 2s infinite linear;
-	display: inline-block;
-}
-@-webkit-keyframes rotation {
-	from { -webkit-transform: rotate(0deg); }
-	to { -webkit-transform: rotate(359deg); }
 }
 	</style>
 
@@ -104,11 +119,10 @@ a:hover {
 		<div id="emptyPipelines" v-if="emptyPipelines"><p>☮️</p></div>
 
 		<div id="pipeline-container">
-			<div class="pipeline" v-for="pipeline in pipelines" v-bind:class="{ [pipeline.status]: true }">
+			<div class="pipeline" v-for="pipeline in pipelines" v-bind:class="{ [pipeline.status]: true, 'active': pipeline.running }">
 				<p class="repo">
-					<span v-if="pipeline.running" class="loading"><a :href="pipeline.active.url" rel="noopener noreferrer">&#x262f;</a></span>
-					<span v-if="pipeline.current == null">{{ pipeline.name }}</span>
-					<span v-if="pipeline.current != null"><a :href="pipeline.current.url" rel="noopener noreferrer">{{ pipeline.name }}</a></span>
+					<span v-if="pipeline.running"><a :href="pipeline.active.url" rel="noopener noreferrer">{{ pipeline.name }}</a></span>
+					<span v-if="!pipeline.running"><a :href="pipeline.current.url" rel="noopener noreferrer">{{ pipeline.name }}</a></span>
 				</p>
 				<p class="ref">{{ pipeline.ref }}</p>
 			</div>

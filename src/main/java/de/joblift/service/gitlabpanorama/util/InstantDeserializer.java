@@ -6,6 +6,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
@@ -18,7 +19,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 /**
  * Due to the fact that GitLab uses different formats for their dates, we catch those here. The API uses
  * "yyyy-MM-dd'T'HH:mm:ss'Z'", the webhooks "yyyy-MM-dd HH:mm:ss 'UTC'", but the tests for webhooks use the same format
- * as the API (d'oh!).
+ * as the API (d'oh!). Also it seems that some users retrieve the date-format with ISO-8601 offset, eg.
+ * 2018-12-19T19:43:57.350+11:00
  */
 public class InstantDeserializer extends JsonDeserializer<Instant> {
 
@@ -27,15 +29,20 @@ public class InstantDeserializer extends JsonDeserializer<Instant> {
 
 	@Override
 	public Instant deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+		Instant result = null;
 		String input = jp.getText();
-		if (isBlank(input)) {
-			return null;
+		if (!isBlank(input)) {
+			if (input.endsWith("UTC")) {
+				result = LocalDateTime.parse(input, DTF).toInstant(ZoneOffset.UTC);
+			}
+			else if (input.endsWith("Z")) {
+				result = instantUtc(input);
+			}
+			else {
+				result = OffsetDateTime.parse(input).toInstant();
+			}
 		}
-		if (input != null && input.endsWith("UTC")) {
-			Instant instant = LocalDateTime.parse(input, DTF).toInstant(ZoneOffset.UTC);
-			return instant;
-		}
-		return instantUtc(input);
+		return result;
 	}
 
 }

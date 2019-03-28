@@ -22,6 +22,7 @@ public class Mapper {
 		mapper.registerModules(new Jdk8Module(), new JavaTimeModule());
 
 		SimpleModule module = new SimpleModule();
+		module.addSerializer(new InstantSerializer());
 		module.addDeserializer(Instant.class, new InstantDeserializer());
 		mapper.registerModule(module);
 	}

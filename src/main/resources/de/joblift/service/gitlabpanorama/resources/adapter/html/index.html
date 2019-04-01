@@ -14,16 +14,6 @@
 	<!-- script src="https://cdn.jsdelivr.net/npm/vue"></script -->
 
 	<style>
-:root {
-	--color-text: #E6E6E6;
-	--color-text-hover: #FEFEFE;
-	--color-background: #0a0a0a;
-	--color-pipeline-failed: #e24329;
-	--color-pipeline-success: #1aaa55;
-	--color-pipeline-canceled: #7F7F7F;
-	--color-pipeline-skipped: #ABADAE;
-}
-
 * {
 	margin: 0;
  	padding: 0;
@@ -134,6 +124,24 @@ a:hover {
 var iconGreen = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB9UlEQVRYhcXXO2gUURSH8d9egohVCBLBQoLdgISggoVPCEGLNLZTiliIIlYWt7DQQVAEK0GwUljBzkYssoq9SorABsEYQggWIiFFCFuIxeyENYlksu7u/Lt5MN83Zx73nJqSqTezIZzBFI7jKIYRsIZFzOIDZtIkbpS5bq0E+CBu4ioOl/RdxQs8SpO43JVAvZkFXMc9+Z12kw08RJYmsVVaoN7MhvEKl7oEb80XXE6TuLSrQL2ZjaKBYz2CF1nGVJrE+X8KtO/8I8Z7DC+ygtNpEheLHaEDHvCyj3Dyl/hNvZnt3yaAa5juI7zIOO4WGzU2S/8NIwMQgBaSNIkLRQVuDBAO+3AHau1n/x1HBigA6zgUcLICOBzAdMCFCuBFJgNOVCgwETBWocBY0P1C04sMhd3P6W+KZqKqtIK8k6kqSwGfKxSYDXhfoUAj4JNqHsM63oY0ib/xrAKB12kS14rP8Cl+DhDewgPaDUmaxDXEAQo8SZP4dVOgned4NwD4nK0dUZF6MxuRN6W97oiLrOBsmsSFYsdfv+I0ib/ko9dcn+CTnfBtAm2JHziPmR7CZ+Xt+PzWAzsuRu1KXMQt/7dWbOA+TnXOAp0pM5yO4jauYLQkuBhOH+80ju1JoENkCOfk78iEfDwfkVdxFUvyUjfsYTz/AyNDf+XwTOOTAAAAAElFTkSuQmCC";
 var iconRed = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABm0lEQVRYhcXXPWsUURjF8d9cliAWEhaJCiLBQiyDWooIYufnEItgay0WwdLSr2BrYaHRTxBMSC1KZAuR4EuRqIWPxcwtXHfdGXZeDpxumf/ZO/feOU+hpoIRruM2ruAiVpHwHR+wizd4VfCj7rMXgU8HD4NJEDX9JXgSnF8GnILN6mF1wdM+rsKvNIWvBi+WAE97J7hQF74W7LcIz/4YXK7zz/c6gGdPgvX/vfPnHcKz94ITswLc6wGevTVr6Q97DPAzyntEqjJsYlxrl7ajFTyAIsoQ79U9Ju3pCGcSrg0Ah5O4k3BzAHjWrYSrAwbYSOZdDP1oPSk/qUNplBb/plvlMjGUfiVlkxlKBwk7AwbYTXg9YIDtfBW/0/9xPMK5VPAbT3uGw7MiH4DgVPC558/xpb/iBHd7DPD4n/WIspK12YTneT9mVbIqxDi6acTZk9yE5io421GISSyq5VMr8bJF+NtoesyrPXE/+LYE+Dh4FE1Hs6kga8FW8KkBOA+nC6te0SDICDeU4/mGcjONlTfpVxwox/NtDcbzPwZJAshPq8kNAAAAAElFTkSuQmCC";
 
+var themes = {
+	"default": {
+		"color-text": "#E6E6E6",
+		"color-text-hover": "#FEFEFE",
+		"color-background": "#0a0a0a",
+		"color-pipeline-failed": "#e24329",
+		"color-pipeline-success": "#1aaa55",
+		"color-pipeline-canceled": "#7F7F7F",
+		"color-pipeline-skipped": "#ABADAE"
+	},
+	"april":{
+		"color-pipeline-failed": "#1aaa55",
+		"color-pipeline-success": "#e24329",
+		"color-pipeline-canceled": "#ABADAE",
+		"color-pipeline-skipped": "#7F7F7F"
+	}
+};
+
 var app = new Vue({
 	el: '#app',
 	data: {
@@ -162,6 +170,12 @@ var app = new Vue({
 		let paramSort = params.get("sort");
 		if (paramSort) {
 			this.sort = paramSort;
+		}
+
+		let paramTheme = params.get("theme");
+		this.theme("default");
+		if (paramTheme) {
+			this.theme(paramTheme);
 		}
 
 		this.fetchPipelines();
@@ -219,6 +233,13 @@ var app = new Vue({
 
 		arePipelinesEmpty: function() {
 			return this.pipelines != null && this.pipelines.length == 0;
+		},
+
+		theme: function(name) {
+			let theme = themes[name];
+			for (const key of Object.keys(theme)) {
+				document.documentElement.style.setProperty("--" + key, theme[key]);
+			}
 		},
 
 		healthyPipelines: function() {

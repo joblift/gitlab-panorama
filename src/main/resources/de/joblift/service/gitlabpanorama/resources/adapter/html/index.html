@@ -129,14 +129,26 @@ var themes = {
 		"color-text": "#E6E6E6",
 		"color-text-hover": "#FEFEFE",
 		"color-background": "#0a0a0a",
-		"color-pipeline-failed": "#e24329",
 		"color-pipeline-success": "#1aaa55",
+		"color-pipeline-failed": "#e24329",
 		"color-pipeline-canceled": "#7F7F7F",
 		"color-pipeline-skipped": "#ABADAE"
 	},
-	"april":{
-		"color-pipeline-failed": "#1aaa55",
+	"deuteranopia": {
+		"color-pipeline-success": "#4382f4",
+		"color-pipeline-failed": "#B5880C"
+	},
+	"protanope": {
+		"color-pipeline-success": "#105de1",
+		"color-pipeline-failed": "#786622"
+	},
+	"tritanerope": {
+		"color-pipeline-success": "#1696c3",
+		"color-pipeline-failed": "#fb105d"
+	},
+	"april": {
 		"color-pipeline-success": "#e24329",
+		"color-pipeline-failed": "#1aaa55",
 		"color-pipeline-canceled": "#ABADAE",
 		"color-pipeline-skipped": "#7F7F7F"
 	}
@@ -174,7 +186,7 @@ var app = new Vue({
 
 		let paramTheme = params.get("theme");
 		this.theme("default");
-		if (paramTheme) {
+		if (paramTheme && themes[paramTheme]) {
 			this.theme(paramTheme);
 		}
 

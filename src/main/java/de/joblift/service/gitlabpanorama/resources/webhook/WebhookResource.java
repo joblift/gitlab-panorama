@@ -1,5 +1,7 @@
 package de.joblift.service.gitlabpanorama.resources.webhook;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +25,7 @@ public class WebhookResource {
 
 	@RequestMapping("/webhook/test")
 	public String webhook(@RequestHeader("X-Gitlab-Event") String gitlabEventType,
-			@RequestHeader("X-Gitlab-Token") String secretToken,
+			@RequestHeader("X-Gitlab-Token") @Nullable String secretToken,
 			@RequestBody String event) throws Exception {
 
 		Say.info("Received message type {},\n {}", gitlabEventType, event);
@@ -33,7 +35,7 @@ public class WebhookResource {
 
 	@RequestMapping("/webhook")
 	public String webhook(@RequestHeader("X-Gitlab-Event") String gitlabEventType,
-			@RequestHeader("X-Gitlab-Token") String secretToken,
+			@RequestHeader("X-Gitlab-Token") @Nullable String secretToken,
 			@RequestBody WebhookEvent event) throws Exception {
 		Say.info("Received webhook {}", gitlabEventType);
 

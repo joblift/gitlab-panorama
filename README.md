@@ -4,9 +4,9 @@ This project aims to visualize the latest pipeline for all branches in every rep
 
 This project is intended to be used as hub for your team, therefore you only have to configure a single token once. After setup GitLab panorama retrieves all future updates by using a webhook. The service queries the pipeline-states only once at the beginning. This is the biggest difference to other gitlab-pipeline-monitors out there and makes especially sense if you have a large amount of project (where you easily end up having thousands of requests to the gitlab api .. per client, requesting over and over again, running into throtteling). In contrast GitLab-panoramas response-times for the pipeline-states are lightning fast, because the current state is always up-to-date and comes from memory.
 
-# Installation
+# Starting panorama
 
-The project is available as docker image:
+The project is available as docker image and can be easily started:
 ```
 docker run --rm -it -p 8080:8080 -e "GITLAB_TOKEN=<your api token>" joblift/gitlab-panorama:latest
 ```
@@ -46,7 +46,7 @@ There are two options where to setup the webhook:
 
 
 ## Storage
-GitLab panorama can store the state of the pipelines in a local file. This is usefull if the service restarts, since at startup no pipelines are available and have to be queried from the GitLab API first. Depending on the amount of repositories, branches and pipelines this can take some minutes.
+GitLab panorama can store the state of the pipelines in a local file. This is useful if the service restarts, since at startup no pipelines are available and have to be queried from the GitLab API first. Depending on the amount of repositories, branches and pipelines this can take some minutes.
 When using docker, you have to mount a volume to the specified path, otherwise data is lost between restarts.
 
 Also it is very useful during development, avoiding massive queries to the GitLab API and faster startup phase.
@@ -67,15 +67,20 @@ Shows a configurable list of pipeline as dynamic single-page-application website
 
 Supported parameter:
 
-| Parameter      | Default          |  Values                                                                                                      | Description |
-| -------------- | ---------------- | ------------------------------------------------------------------------------------------------------------ | ----------- |
-| `filterStatus` | (empty)          | Comma-separated list of status, or empty (all). Available states: `success`, `failed`, `canceled`, `skipped` | Shows only pipelines not within the specified list. |
-| `onlyRefs`     | (empty)          | Comma-separated list of refs, or empty (all).                                                                | Shows only pipelines from the refs within the specified list. |
-| `sort`         | `alphabetically` | One of `alphabetically`, `importance`                                                                        | Sort the list by one of the available options. |
+| Parameter      | Default          | Values                                                       | Description                                                  |
+| -------------- | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `filterStatus` | (empty)          | Comma-separated list of status, or empty (all). Available states: `success`, `failed`, `canceled`, `skipped` | Shows only pipelines not within the specified list.          |
+| `onlyRefs`     | (empty)          | Comma-separated list of refs, or empty (all).                | Shows only pipelines from the refs within the specified list. |
+| `sort`         | `alphabetically` | One of `alphabetically`, `importance`                        | Sort the list by one of the available options.               |
+| `theme`        | `default`        | One of `default`, `deuteranopia`, `protanope`, `tritanerope`, `aprilfools` | Defines a color theme. Themes for color-blindness are provided, please [give feedback](https://github.com/joblift/gitlab-panorama/issues) when the colors can be optimized. |
 
 Screenshot (with obfuscated project names):
 
-![html screenshot 01](media/screenshot-html-01.png)
+![html screenshot default deuteranopia protanope tritanerope](media/screenshot-html-default.png)
+
+Various themes:
+
+![html screenshot default deuteranopia protanope tritanerope](media/screenshot-themes.png)
 
 ## shell
 Endpoint: `/api/adapter/shell`

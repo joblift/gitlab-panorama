@@ -13,10 +13,10 @@
    version="1.1"
    id="svg22"
    sodipodi:docname="gitlab-panorama-02.svg"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   inkscape:export-filename="D:\network\Dropbox\office\joblift\gitlab-panorama-02-128x71.png"
-   inkscape:export-xdpi="58.630001"
-   inkscape:export-ydpi="58.630001">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="D:\network\Dropbox\office\joblift\gitlab-panorama-02-1920x1114.png"
+   inkscape:export-xdpi="879.46332"
+   inkscape:export-ydpi="879.46332">
   <metadata
      id="metadata26">
     <rdf:RDF>
@@ -43,9 +43,9 @@
      id="namedview24"
      showgrid="false"
      inkscape:zoom="2.4329897"
-     inkscape:cx="89.919218"
+     inkscape:cx="29.910744"
      inkscape:cy="82.532995"
-     inkscape:window-x="1402"
+     inkscape:window-x="411"
      inkscape:window-y="53"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg22" />
@@ -111,24 +111,24 @@
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-     x="36.991528"
-     y="109.94704"
+     x="22.605934"
+     y="115.29026"
      id="text3745"><tspan
        sodipodi:role="line"
        id="tspan3743"
-       x="36.991528"
-       y="109.94704"
+       x="22.605934"
+       y="115.29026"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;font-family:'Source Sans Pro';-inkscape-font-specification:'Source Sans Pro'">panorama</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
      x="77.476685"
-     y="91.040268"
+     y="92.684334"
      id="text3749"><tspan
        sodipodi:role="line"
        id="tspan3747"
        x="77.476685"
-       y="91.040268"
+       y="92.684334"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.66666603px;font-family:'Source Sans Pro';-inkscape-font-specification:'Source Sans Pro'">GitLab</tspan></text>
   <text
      xml:space="preserve"

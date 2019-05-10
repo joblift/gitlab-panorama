@@ -1,15 +1,14 @@
 package de.joblift.service.gitlabpanorama.core.aggregator;
 
-import static de.galan.commons.time.Instants.*;
-import static org.assertj.core.api.Assertions.*;
-
-import java.time.Instant;
-
-import org.junit.jupiter.api.Test;
-
 import de.joblift.service.gitlabpanorama.core.models.Pipeline;
 import de.joblift.service.gitlabpanorama.core.models.Project;
 import de.joblift.service.gitlabpanorama.core.models.Status;
+import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+
+import static de.galan.commons.time.Instants.instantUtc;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
@@ -47,6 +46,14 @@ public class PipelinePairTest {
 		PipelinePair pp = new PipelinePair(pa, pc);
 		assertThat(pp.getActive()).isEqualTo(pa);
 		assertThat(pp.getCurrent()).isEqualTo(pc);
+	}
+
+	@Test
+	public void singleManual() {
+		Pipeline p = p(1L, Status.manual);
+		PipelinePair pp = new PipelinePair(p);
+		assertThat(pp.getActive()).isNull();
+		assertThat(pp.getCurrent()).isEqualTo(p);
 	}
 
 
@@ -102,6 +109,15 @@ public class PipelinePairTest {
 		PipelinePair pp = new PipelinePair(pc1, pa, pc2);
 		assertThat(pp.getActive()).isNull();
 		assertThat(pp.getCurrent()).isEqualTo(pc2);
+	}
+
+	@Test
+	public void currentActiveFromManual() {
+		Pipeline pc = p(1L, Status.manual, T1);
+		Pipeline pa = p(1L, Status.running, T2);
+		PipelinePair pp = new PipelinePair(pa, pc);
+		assertThat(pp.getActive()).isEqualTo(pa);
+		assertThat(pp.getCurrent()).isEqualTo(pc);
 	}
 
 

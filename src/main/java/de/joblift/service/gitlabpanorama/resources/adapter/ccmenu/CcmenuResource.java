@@ -98,8 +98,11 @@ public class CcmenuResource {
 		if (pair.getCurrent().getStatus() == Status.failed) {
 			return "Failure";
 		}
-		// ccmenu does not reflect skipped, show as success since it is at least not failed
+		// ccmenu does not reflect skipped or manual, show as success since it is at least not failed
 		if (pair.getCurrent().getStatus() == Status.skipped) {
+			return "Success";
+		}
+		if (pair.getCurrent().getStatus() == Status.manual) {
 			return "Success";
 		}
 		return "Unknown";

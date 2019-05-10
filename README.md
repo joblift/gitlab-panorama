@@ -114,7 +114,7 @@ Actually only used by the html endpoint.
 ## prometheus
 Endpoint: `/api/adapter/prometheus`
 
-Can be used as exporter from a prometheus scraper. Return values are: success=0, skipped=1, canceled=2, failed=10. 
+Can be used as exporter from a prometheus scraper. Return values are: success=0, skipped=1, canceled=2, manual=3, failed=10. 
 
 Examples:
 

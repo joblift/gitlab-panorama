@@ -41,6 +41,14 @@ public class InstantDeserializerTest {
 		assertThat(output.created).isEqualTo(instantUtc("2018-12-19T08:43:57.350Z"));
 	}
 
+
+	@Test
+	public void offsetPlainUtcFormat() throws JsonParseException, JsonMappingException, IOException {
+		String input = "{\"created\":\"2018-12-19 19:43:57.350 +1100\"}";
+		Dummy output = Mapper.get().readValue(input, Dummy.class);
+		assertThat(output.created).isEqualTo(instantUtc("2018-12-19T08:43:57.350Z"));
+	}
+
 }
 
 

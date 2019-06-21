@@ -123,16 +123,22 @@ public class GitlabClient {
 
 	public GitlabPipelineComplete retrievePipelineComplete(GitlabProject project, String ref, Long pipelineId) {
 		GitlabPipelineComplete result = null;
-		HttpBuilder http = Flux.request(configuration.getEndpoint() + "/projects/" + project.getId() + "/pipelines/" + pipelineId)
+		String url = configuration.getEndpoint() + "/projects/" + project.getId() + "/pipelines/" + pipelineId;
+		HttpBuilder http = Flux.request(url)
 			.param("private_token", configuration.getToken())
 			.param("yaml_errors", "false");
 		Say.info("Querying pipeline details for pipeline {}, {}, {}", project.getPathNamespaced(), ref, pipelineId);
 		try (Response response = http.get()) {
 			requestCounter++;
-			GitlabPipelineComplete complete = Mapper.get().readValue(response.getStreamAsString(), GitlabPipelineComplete.class);
-			complete.setProject(project);
-			if (!(complete.isTag() && filterTags)) {
-				result = complete;
+			if (response.isSucceded()) {
+				GitlabPipelineComplete complete = Mapper.get().readValue(response.getStreamAsString(), GitlabPipelineComplete.class);
+				complete.setProject(project);
+				if (!(complete.isTag() && filterTags)) {
+					result = complete;
+				}
+			}
+			else {
+				Say.info("Failed retrieving pipline details from gitlab for {url}, code {code}", url, response.getStatusCode());
 			}
 		}
 		catch (Exception ex) {

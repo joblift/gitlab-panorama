@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.eventbus.EventBus;
 
 import de.galan.commons.logging.Say;
-import de.galan.commons.time.Sleeper;
+import de.galan.commons.util.Retryable;
 import de.joblift.service.gitlabpanorama.core.models.BranchDeletedEvent;
 import de.joblift.service.gitlabpanorama.gitlab.GitlabClient;
 import de.joblift.service.gitlabpanorama.gitlab.model.GitlabPipelineComplete;
@@ -38,17 +38,23 @@ public class WebhookService {
 
 	private void processPipeline(WebhookEventPipeline event) {
 		GitlabPipelineComplete attribute = event.getAttributes();
-		// fetch again, since not all fields are available in the webhook object
 		Say.info("Processing pipeline webhook event id {}, ref {}", attribute.getId(), attribute.getRef());
-		GitlabPipelineComplete fetched = client.retrievePipelineComplete(event.getProject(), attribute.getRef(), attribute.getId());
-		// debugging invalid events
-		if (fetched.getId() == null) {
-			Say.info("Received invalid pipeline id {}, sleeping", fetched.getId());
-			Sleeper.sleep("5s");
-			fetched = client.retrievePipelineComplete(event.getProject(), attribute.getRef(), attribute.getId());
-			Say.info("Newly received pipeline id {}", fetched.getId());
+		try {
+			Retryable.retry(3).timeToWait("5s")
+				.message("Invalid response for pipeline webhook event id '" + attribute.getId() + "', ref '" + attribute.getRef() + "'")
+				.call(() -> {
+					GitlabPipelineComplete fetched = client.retrievePipelineComplete(event.getProject(), attribute.getRef(), attribute.getId());
+					// debugging invalid events
+					if (fetched.getId() == null) {
+						throw new RuntimeException("Invalid response for webhook event");
+					}
+					eventbus.post(fetched.toPipeline());
+					return null;
+				});
 		}
-		eventbus.post(fetched.toPipeline());
+		catch (Exception ex) {
+			Say.error("Unable to recive pipeline for webhook event id {}, ref {}", attribute.getId(), attribute.getRef());
+		}
 	}
 
 

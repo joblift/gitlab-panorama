@@ -27,6 +27,30 @@ public class InstantDeserializerTest {
 
 
 	@Test
+	public void standardUtcMilis1ApiFormat() throws JsonParseException, JsonMappingException, IOException {
+		String input = "{\"created\":\"2019-06-24T04:06:44.1Z\"}";
+		Dummy output = Mapper.get().readValue(input, Dummy.class);
+		assertThat(output.created).isEqualTo(instantUtc("2019-06-24T04:06:44.100Z"));
+	}
+
+
+	@Test
+	public void standardUtcMilis2ApiFormat() throws JsonParseException, JsonMappingException, IOException {
+		String input = "{\"created\":\"2019-06-24T04:06:44.13Z\"}";
+		Dummy output = Mapper.get().readValue(input, Dummy.class);
+		assertThat(output.created).isEqualTo(instantUtc("2019-06-24T04:06:44.130Z"));
+	}
+
+
+	@Test
+	public void standardUtcMilis3ApiFormat() throws JsonParseException, JsonMappingException, IOException {
+		String input = "{\"created\":\"2019-06-24T04:06:44.132Z\"}";
+		Dummy output = Mapper.get().readValue(input, Dummy.class);
+		assertThat(output.created).isEqualTo(instantUtc("2019-06-24T04:06:44.132Z"));
+	}
+
+
+	@Test
 	public void standardUtcWebhookFormat() throws JsonParseException, JsonMappingException, IOException {
 		String input = "{\"created\":\"2019-03-26 08:47:57 UTC\"}";
 		Dummy output = Mapper.get().readValue(input, Dummy.class);

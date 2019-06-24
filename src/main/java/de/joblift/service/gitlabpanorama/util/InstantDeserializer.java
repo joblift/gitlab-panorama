@@ -25,11 +25,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 public class InstantDeserializer extends JsonDeserializer<Instant> {
 
 	private final static Pattern PATTERN_UTC_1 = Pattern.compile("^\\d{4}-\\d{1,2}[-]\\d{1,2} \\d{2}:\\d{2}:\\d{2} UTC$"); // 2019-06-21 15:49:38 UTC
-	private final static Pattern PATTERN_UTC_2 = Pattern.compile("^\\d{4}-\\d{1,2}[-]\\d{1,2}T\\d{2}:\\d{2}:\\d{2}Z$"); // 2019-06-21T15:49:38Z
+	private final static Pattern PATTERN_UTC_2 = Pattern.compile("^\\d{4}-\\d{1,2}[-]\\d{1,2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?Z$"); // 2019-06-21T15:49:38Z
 	private final static Pattern PATTERN_LOCAL_1 = Pattern.compile("^\\d{4}-\\d{1,2}[-]\\d{1,2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}[+]\\d{2}:\\d{2}$"); // 2018-12-19T19:43:57.350+11:00
 	//private final static Pattern PATTERN_LOCAL_2 = Pattern.compile("^\\d{4}-\\d{1,2}[-]\\d{1,2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3} [+]\\d{2}\\d{2}$"); // 2018-12-19T19:43:57.350 +11:00
 	private final static DateTimeFormatter DTF_UTC_1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'");
-	private final static DateTimeFormatter DTF_UTC_2 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	private final static DateTimeFormatter DTF_UTC_2 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]'Z'");
 	private final static DateTimeFormatter DTF_FALLBACK = DateTimeFormatter.ofPattern(
 		"[yyyyMMdd][yyyy-MM-dd][yyyy-DDD][['T'][ ][HHmmss][HHmm][HH:mm:ss][HH:mm][.SSSSSSSSS][.SSSSSS][.SSS][.SS][.S]][ ][OOOO][O][z][XXXXX][XXXX]['['VV']']");
 

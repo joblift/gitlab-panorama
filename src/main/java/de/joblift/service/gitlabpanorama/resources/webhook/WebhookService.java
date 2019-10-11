@@ -53,7 +53,7 @@ public class WebhookService {
 				});
 		}
 		catch (Exception ex) {
-			Say.error("Unable to recive pipeline for webhook event id {}, ref {}", attribute.getId(), attribute.getRef());
+			Say.error("Unable to recive pipeline for webhook event id {}, ref {}", ex, attribute.getId(), attribute.getRef());
 		}
 	}
 

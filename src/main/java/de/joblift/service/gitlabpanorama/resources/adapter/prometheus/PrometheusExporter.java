@@ -31,7 +31,7 @@ public class PrometheusExporter {
 			.filter(pair -> pair.getCurrent() != null)
 			.map(pair -> "gitlab_pipeline_state{repository=\"" + pair.getName() + "\",ref=\"" + pair.getRef() + "\",state=\"" + pair.getCurrent().getStatus()
 					+ "\"} " + stateToValue(pair))
-			.collect(Collectors.joining("\n"));
+			.collect(Collectors.joining("\n")) + "\n"; // requires line-break at end for newer prometheus versions
 	}
 
 

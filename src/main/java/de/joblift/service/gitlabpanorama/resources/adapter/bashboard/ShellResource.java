@@ -61,7 +61,8 @@ public class ShellResource {
 			String stringFailures = list(pipelines, Status.failed, delimiterProjects, refs, filterStatusList);
 			String stringSkipped = list(pipelines, Status.skipped, delimiterProjects, refs, filterStatusList);
 			String stringSuccess = list(pipelines, Status.success, delimiterProjects, refs, filterStatusList);
-			builder.append(Joiner.on(delimiterLists).skipNulls().join(stringFailures, stringSkipped, stringSuccess));
+			String stringManual = list(pipelines, Status.manual, delimiterProjects, refs, filterStatusList);
+			builder.append(Joiner.on(delimiterLists).skipNulls().join(stringFailures, stringSkipped, stringSuccess, stringManual));
 		}
 		return builder.toString();
 
@@ -99,6 +100,9 @@ public class ShellResource {
 		}
 		if (pair.getCurrent().getStatus() == Status.skipped) {
 			return Color.WHITE;
+		}
+		if (pair.getCurrent().getStatus() == Status.manual) {
+			return Color.CYAN;
 		}
 		return Color.MAGENTA;
 	}

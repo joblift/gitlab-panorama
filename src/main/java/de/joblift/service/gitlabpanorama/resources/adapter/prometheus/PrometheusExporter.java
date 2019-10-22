@@ -43,6 +43,8 @@ public class PrometheusExporter {
 				return "1";
 			case canceled:
 				return "2";
+			case manual:
+				return "3";
 			case failed:
 				return "10";
 			default:

@@ -11,6 +11,7 @@ public enum Status {
 
 	// sleeping
 	success,
+	manual,
 	failed,
 	canceled,
 	skipped;

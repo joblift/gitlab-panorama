@@ -2,7 +2,7 @@ package de.joblift.service.gitlabpanorama.resources.adapter.bashboard;
 
 import static java.util.stream.Collectors.*;
 import static org.apache.commons.lang3.StringUtils.*;
-import static org.fusesource.jansi.Ansi.*;
+import static org.fusesource.jansi.Ansi.ansi;
 
 import java.util.List;
 
@@ -11,7 +11,6 @@ import org.fusesource.jansi.Ansi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Joiner;

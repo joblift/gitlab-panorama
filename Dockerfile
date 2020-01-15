@@ -1,11 +1,11 @@
-FROM maven:3.6.0-jdk-8 as build
+FROM maven:3.6-jdk-13 as build
 
 COPY . /sources
 WORKDIR /sources
-RUN mvn clean verify 
+RUN mvn -B clean verify
 
 
-FROM openjdk:8-jdk-alpine
+FROM openjdk:13-jdk-alpine
 
 COPY --from=build /sources/target/application.jar /project/application.jar
 

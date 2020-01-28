@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.joblift</groupId>
@@ -11,16 +10,20 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<jdk.compiler.version>1.8</jdk.compiler.version>
-		<version.spring>2.2.2.RELEASE</version.spring>
-		<library.checkstyle.version>8.28</library.checkstyle.version>
+		<jdk.compiler.version>13</jdk.compiler.version>
+		<version.spring>2.2.4.RELEASE</version.spring>
+		<library.checkstyle.version>8.29</library.checkstyle.version>
 		<plugin.checkstyle.version>3.1.0</plugin.checkstyle.version>
+		<enforced.maven.version>3.6.1</enforced.maven.version>
+		<enforced.java.version>13.0.1</enforced.java.version>
 	</properties>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.2.RELEASE</version>
+		<version>2.2.4.RELEASE</version>
 	</parent>
+
 	<dependencies>
 		<dependency>
 			<groupId>de.galan</groupId>
@@ -40,7 +43,7 @@
 		<dependency>
 			<groupId>org.fusesource.jansi</groupId>
 			<artifactId>jansi</artifactId>
-			<version>1.17.1</version>
+			<version>1.18</version>
 		</dependency>
 
 		<!-- test dependencies -->
@@ -181,6 +184,35 @@
 								<NoPackageCyclesRule implementation="de.andrena.tools.nopackagecycles.NoPackageCyclesRule">
 									<includeTests>false</includeTests>
 								</NoPackageCyclesRule>
+							</rules>
+						</configuration>
+					</execution>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>${enforced.maven.version}</version>
+								</requireMavenVersion>
+							</rules>
+							<fail>true</fail>
+						</configuration>
+					</execution>
+					<execution>
+						<id>enforce-java</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>${enforced.java.version}</version>
+								</requireJavaVersion>
 							</rules>
 						</configuration>
 					</execution>

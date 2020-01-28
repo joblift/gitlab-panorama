@@ -28,7 +28,7 @@ public class CcmenuResource {
 	Aggregator aggregator;
 
 
-	@RequestMapping
+	@RequestMapping(produces = {"application/xml"})
 	public String refresh() {
 		Say.info("Requesting {format}", "ccmenu");
 		List<PipelinePair> pipelines = aggregator.getPipelines();
@@ -36,12 +36,12 @@ public class CcmenuResource {
 		builder.append("<Projects>\n");
 		for (PipelinePair pair : pipelines) {
 			builder.append("<Project ");
-			builder.append("name=\"" + esc(pair.getName()) + "\" \n");
-			builder.append("activity=\"" + (pair.isRunning() ? "Building" : "Sleeping") + "\" \n");
-			builder.append("lastBuildStatus=\"" + getLastBuildStatus(pair) + "\" \n");
-			builder.append("lastBuildTime=\"" + getLastBuildTime(pair) + "\" \n");
-			builder.append("lastBuildLabel=\"" + esc(getLastBuildLabel(pair)) + "\" \n");
-			builder.append("webUrl=\"" + esc(getWebUrl(pair)) + "\" \n");
+			builder.append("name=\"").append(esc(pair.getName())).append("\" \n");
+			builder.append("activity=\"").append(pair.isRunning() ? "Building" : "Sleeping").append("\" \n");
+			builder.append("lastBuildStatus=\"").append(getLastBuildStatus(pair)).append("\" \n");
+			builder.append("lastBuildTime=\"").append(getLastBuildTime(pair)).append("\" \n");
+			builder.append("lastBuildLabel=\"").append(esc(getLastBuildLabel(pair))).append("\" \n");
+			builder.append("webUrl=\"").append(esc(getWebUrl(pair))).append("\" \n");
 			builder.append("/>\n");
 		}
 		builder.append("</Projects>\n");

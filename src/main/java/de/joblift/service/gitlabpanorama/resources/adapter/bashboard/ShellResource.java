@@ -2,12 +2,12 @@ package de.joblift.service.gitlabpanorama.resources.adapter.bashboard;
 
 import static java.util.stream.Collectors.*;
 import static org.apache.commons.lang3.StringUtils.*;
-import static org.fusesource.jansi.Ansi.*;
+import static org.fusesource.jansi.Ansi.ansi;
 
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.fusesource.jansi.Ansi.Color;
+import org.fusesource.jansi.Ansi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,13 +34,13 @@ public class ShellResource {
 	Aggregator aggregator;
 
 
-	@RequestMapping
+	@RequestMapping(produces = {"text/plain"})
 	public String shell(@RequestParam(defaultValue = "true") Boolean dots,
-			@RequestParam(defaultValue = EMPTY) String filterStatus,
-			@RequestParam(defaultValue = "true") Boolean refs,
-			@RequestParam(defaultValue = "true") Boolean lists,
-			@RequestParam(defaultValue = ", ") String delimiterProjects,
-			@RequestParam(defaultValue = "\n") String delimiterLists) {
+		@RequestParam(defaultValue = EMPTY) String filterStatus,
+		@RequestParam(defaultValue = "true") Boolean refs,
+		@RequestParam(defaultValue = "true") Boolean lists,
+		@RequestParam(defaultValue = ", ") String delimiterProjects,
+		@RequestParam(defaultValue = "\n") String delimiterLists) {
 		Say.info("Requesting {format}", "bash");
 		List<PipelinePair> pipelines = aggregator.getPipelines();
 		StringBuilder builder = new StringBuilder();
@@ -51,7 +51,9 @@ public class ShellResource {
 			for (PipelinePair pair : pipelines) {
 				if (matches(pair, filterStatusList)) {
 					String icon = pair.isRunning() ? "▶" : "●";
-					builder.append(ansi().fg(getLastBuildStatus(pair)) + icon + ansi().fg(Color.DEFAULT));
+					builder.append(ansi().fg(getLastBuildStatus(pair)))
+						.append(icon)
+						.append(ansi().fg(Color.DEFAULT));
 				}
 			}
 			builder.append("\n");
@@ -91,16 +93,18 @@ public class ShellResource {
 		if (pair.getCurrent() == null) {
 			return Color.BLUE;
 		}
-		if (pair.getCurrent().getStatus() == Status.success) {
-			return Color.GREEN;
+
+		switch (pair.getCurrent().getStatus()) {
+			case success:
+				return Color.GREEN;
+			case failed:
+				return Color.RED;
+			case skipped:
+				return Color.WHITE;
+			default:
+				return Color.MAGENTA;
 		}
-		if (pair.getCurrent().getStatus() == Status.failed) {
-			return Color.RED;
-		}
-		if (pair.getCurrent().getStatus() == Status.skipped) {
-			return Color.WHITE;
-		}
-		return Color.MAGENTA;
+
 	}
 
 }

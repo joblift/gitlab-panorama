@@ -23,7 +23,7 @@ public class PrometheusExporter {
 	Aggregator aggregator;
 
 
-	@RequestMapping
+	@RequestMapping(produces = {"text/plain"})
 	public String bash() {
 		Say.info("Requesting {format}", "prometheus");
 		List<PipelinePair> pipelines = aggregator.getPipelines();

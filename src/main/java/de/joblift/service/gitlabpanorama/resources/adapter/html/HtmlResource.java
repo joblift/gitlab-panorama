@@ -5,7 +5,6 @@ import static java.nio.charset.StandardCharsets.*;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public class HtmlResource {
 	public ResponseEntity<String> html() throws IOException {
 		Say.info("Requesting {format}", "html");
 		InputStream stream = getClass().getResourceAsStream("index.html");
-		String body = IOUtils.toString(stream, UTF_8);
+		String body = new String(stream.readAllBytes(), UTF_8);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Cache-Control", "no-store, no-cache, must-revalidate");

@@ -1,7 +1,5 @@
 package de.joblift.service.gitlabpanorama.storage.local;
 
-import static java.nio.charset.StandardCharsets.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,8 +36,7 @@ public class LocalStorage implements Storage {
 				File file = new File(getPath(), STATE_FILENAME);
 				if (file.exists()) {
 					Say.info("Loading locally stored files from {}", file.getAbsolutePath());
-					String content = FileUtils.readFileToString(file, UTF_8);
-					Pipeline[] pipelines = Mapper.get().readValue(content, Pipeline[].class);
+					Pipeline[] pipelines = Mapper.get().readValue(file, Pipeline[].class);
 					result = Arrays.asList(pipelines);
 					Say.info("Found {} locally stored pipelines", result.size());
 				}
@@ -62,7 +58,7 @@ public class LocalStorage implements Storage {
 			try {
 				File file = new File(getPath(), STATE_FILENAME);
 				Say.info("Storing state to file {}", file.getAbsolutePath());
-				FileUtils.write(file, Mapper.get().writeValueAsString(pipelines), UTF_8);
+				Mapper.get().writeValue(file, pipelines);
 			}
 			catch (IOException ex) {
 				Say.warn("Failed storing state file in '" + configuration.getPath() + "'", ex);

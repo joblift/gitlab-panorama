@@ -4,8 +4,6 @@ import static java.nio.charset.StandardCharsets.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,7 +36,7 @@ public class RootResource {
 
 	private String read(String filename) throws IOException {
 		InputStream stream = getClass().getResourceAsStream(filename);
-		return IOUtils.toString(stream, UTF_8);
+		return new String(stream.readAllBytes(), UTF_8);
 	}
 
 }

@@ -1,11 +1,11 @@
-FROM maven:3.6-jdk-13 as build
+FROM maven:3.8.5-eclipse-temurin-17-alpine as build
 
 COPY . /sources
 WORKDIR /sources
 RUN mvn -B clean verify
 
 
-FROM openjdk:13-jdk-alpine
+FROM eclipse-temurin:17-jre-alpine
 
 COPY --from=build /sources/target/application.jar /project/application.jar
 

@@ -6,11 +6,9 @@ import static org.assertj.core.api.Assertions.*;
 import java.io.IOException;
 import java.time.Instant;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 /**
@@ -19,7 +17,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class InstantDeserializerTest {
 
 	@Test
-	public void standardUtcApiFormat() throws JsonParseException, JsonMappingException, IOException {
+	public void standardUtcApiFormat() throws IOException {
 		String input = "{\"created\":\"2019-03-26T08:47:57Z\"}";
 		Dummy output = Mapper.get().readValue(input, Dummy.class);
 		assertThat(output.created).isEqualTo(instantUtc("2019-03-26T08:47:57Z"));
@@ -27,7 +25,7 @@ public class InstantDeserializerTest {
 
 
 	@Test
-	public void standardUtcMilis1ApiFormat() throws JsonParseException, JsonMappingException, IOException {
+	public void standardUtcMilis1ApiFormat() throws IOException {
 		String input = "{\"created\":\"2019-06-24T04:06:44.1Z\"}";
 		Dummy output = Mapper.get().readValue(input, Dummy.class);
 		assertThat(output.created).isEqualTo(instantUtc("2019-06-24T04:06:44.100Z"));
@@ -35,7 +33,7 @@ public class InstantDeserializerTest {
 
 
 	@Test
-	public void standardUtcMilis2ApiFormat() throws JsonParseException, JsonMappingException, IOException {
+	public void standardUtcMilis2ApiFormat() throws IOException {
 		String input = "{\"created\":\"2019-06-24T04:06:44.13Z\"}";
 		Dummy output = Mapper.get().readValue(input, Dummy.class);
 		assertThat(output.created).isEqualTo(instantUtc("2019-06-24T04:06:44.130Z"));
@@ -43,7 +41,7 @@ public class InstantDeserializerTest {
 
 
 	@Test
-	public void standardUtcMilis3ApiFormat() throws JsonParseException, JsonMappingException, IOException {
+	public void standardUtcMilis3ApiFormat() throws IOException {
 		String input = "{\"created\":\"2019-06-24T04:06:44.132Z\"}";
 		Dummy output = Mapper.get().readValue(input, Dummy.class);
 		assertThat(output.created).isEqualTo(instantUtc("2019-06-24T04:06:44.132Z"));
@@ -51,7 +49,7 @@ public class InstantDeserializerTest {
 
 
 	@Test
-	public void standardUtcWebhookFormat() throws JsonParseException, JsonMappingException, IOException {
+	public void standardUtcWebhookFormat() throws IOException {
 		String input = "{\"created\":\"2019-03-26 08:47:57 UTC\"}";
 		Dummy output = Mapper.get().readValue(input, Dummy.class);
 		assertThat(output.created).isEqualTo(instantUtc("2019-03-26T08:47:57Z"));
@@ -59,7 +57,7 @@ public class InstantDeserializerTest {
 
 
 	@Test
-	public void offsetUtcFormat() throws JsonParseException, JsonMappingException, IOException {
+	public void offsetUtcFormat() throws IOException {
 		String input = "{\"created\":\"2018-12-19T19:43:57.350+11:00\"}";
 		Dummy output = Mapper.get().readValue(input, Dummy.class);
 		assertThat(output.created).isEqualTo(instantUtc("2018-12-19T08:43:57.350Z"));
@@ -67,7 +65,7 @@ public class InstantDeserializerTest {
 
 
 	@Test
-	public void offsetPlainUtcFormat() throws JsonParseException, JsonMappingException, IOException {
+	public void offsetPlainUtcFormat() throws IOException {
 		String input = "{\"created\":\"2018-12-19 19:43:57.350 +1100\"}";
 		Dummy output = Mapper.get().readValue(input, Dummy.class);
 		assertThat(output.created).isEqualTo(instantUtc("2018-12-19T08:43:57.350Z"));

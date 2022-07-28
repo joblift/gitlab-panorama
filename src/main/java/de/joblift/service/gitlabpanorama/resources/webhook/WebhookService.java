@@ -43,6 +43,9 @@ public class WebhookService {
 				.message("Invalid response for pipeline webhook event id '" + attribute.getId() + "', ref '" + attribute.getRef() + "'")
 				.call(() -> {
 					GitlabPipelineComplete fetched = client.retrievePipelineComplete(event.getProject(), attribute.getRef(), attribute.getId());
+					if (fetched == null) {
+						return null;
+					}
 					// debugging invalid events
 					if (fetched.getId() == null) {
 						throw new RuntimeException("Invalid response for webhook event");

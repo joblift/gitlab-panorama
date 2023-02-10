@@ -9,7 +9,7 @@ import lombok.Data;
 
 
 /**
- * Blacklist/Whitelist Configuration for the filter
+ * Blocklist/Allowlist Configuration for the filter
  */
 @Data
 @Validated

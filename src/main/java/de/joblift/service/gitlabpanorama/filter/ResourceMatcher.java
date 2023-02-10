@@ -25,9 +25,9 @@ public class ResourceMatcher {
 
 
 	private boolean matches(String input, FilterLists filter) {
-		boolean matchWhitelist = filter.getWhitelistPattern().stream().anyMatch(pattern -> pattern.matcher(input).matches());
-		boolean matchBlacklist = filter.getBlacklistPattern().stream().anyMatch(pattern -> pattern.matcher(input).matches());
-		return matchWhitelist && !matchBlacklist;
+		boolean matchAllowlist = filter.getAllowlistPattern().stream().anyMatch(pattern -> pattern.matcher(input).matches());
+		boolean matchBlocklist = filter.getBlocklistPattern().stream().anyMatch(pattern -> pattern.matcher(input).matches());
+		return matchAllowlist && !matchBlocklist;
 	}
 
 }

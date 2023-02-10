@@ -1,8 +1,16 @@
 ![GitLab panorama](media/gitlab-panorama-02-256x142.png)
 
-This project aims to visualize the latest pipeline for all branches in every repository in various output-formats. Output-formats currently available are: ccmenu, html, json, bash and prometheus (See adapter below for screenshots). The queried repositories and branches can be configuried using whitelist/blacklist and regular expressions.
+This project aims to visualize the latest pipeline for all branches in every repository in various output-formats.
+Output-formats currently available are: ccmenu, html, json, bash and prometheus (See adapter below for screenshots). The
+queried repositories and branches can be configured using Allowlist/Blocklist and regular expressions.
 
-This project is intended to be used as hub for your team, therefore you only have to configure a single token once. After setup GitLab panorama retrieves all future updates by using a webhook. The service queries the pipeline-states only once at the beginning. This is the biggest difference to other gitlab-pipeline-monitors out there and makes especially sense if you have a large amount of project (where you easily end up having thousands of requests to the gitlab api .. per client, requesting over and over again, running into throtteling). In contrast GitLab-panoramas response-times for the pipeline-states are lightning fast, because the current state is always up-to-date and comes from memory.
+This project is intended to be used as hub for your team, therefore you only have to configure a single token once.
+After setup GitLab panorama retrieves all future updates by using a webhook. The service queries the pipeline-states
+only once at the beginning. This is the biggest difference to other gitlab-pipeline-monitors out there and makes
+especially sense if you have a large amount of project (where you easily end up having thousands of requests to the
+gitlab api .. per client, requesting over and over again, running into throttling). In contrast, GitLab-panoramas
+response-times for the pipeline-states are lightning fast, because the current state is always up-to-date and comes from
+memory.
 
 # Starting panorama
 
@@ -18,11 +26,12 @@ A healthcheck for liveness or readiness probes is available at `/ping`.
 GitLab panorama will be configured by using environment-variables, Java system properties or yaml file.
 The easiest (and recommended way) is to use environment-variables when panorama is started as Docker container.
 
-It is required to setup a Webhook in your Gitlab instance in order to get pipeline updates.
+It is required to set up a Webhook in your Gitlab instance in order to get pipeline updates.
 
 ## Gitlab Webhook
 
-You have to define a webhook with the triggers `Push events` and `Pipeline Events`. Also it is recommended to use ssl (`Enable SSL verification`), and utilize the `Secret Token`.
+You have to define a webhook with the triggers `Push events` and `Pipeline Events`. It's also recommended to use
+SSL (`Enable SSL verification`), and utilize the `Secret Token`.
 There are two options where to setup the webhook:
 
 * For each required project (Gitlab free/core) within `settings / integrations`. See a [screenshot](media/screenshot-gitlab-webhook.png).
@@ -30,19 +39,19 @@ There are two options where to setup the webhook:
 
 ## GitLab panorama - environment variables
 
-| Variable                      | Required |  Default value            | Description |
-| ----------------------------- | -------- | ------------------------- | ----------- |
-| `GITLAB_TOKEN`                | YES      |                           | A gitlab [access token](https://gitlab.com/profile/personal_access_tokens). A token with scope API is required. |
-| `GITLAB_ENDPOINT`             |          | https://gitlab.com/api/v4 | GitLab API endpoint. |
-| `GITLAB_TIMEOUT`              |          | `20s`                     | Timeout for gitlab api requests. |
-| `WEBHOOK_SECRET_TOKEN`        |          |                           | Increases security: https://docs.gitlab.com/ee/user/project/integrations/webhooks.html#secret-token |
-| `INIT_COLLECT_FROM_GITLAB`    |          | true                      | Will query the pipelines once on service start. |
-| `INIT_LOAD_FROM_STORAGE`      |          | false                     | Will load the pipelines from a local storage-file. This has some implications, read below. |
-| `FILTER_PROJECTS_WHITELIST_n` |          | `.*`                      | A regular expression that is required to match the project name (pathNamespaced). Multiple expressions are possible, _n_ starts with 0. |
-| `FILTER_PROJECTS_BLACKLIST_n` |          |                           | A regular expression that is required _NOT_ to match the project name (pathNamespaced). Multiple expressions are possible, _n_ starts with 0. |
-| `FILTER_REFS_WHITELIST_n`     |          | `.*`                      | A regular expression that is required to match the ref name (pathNamespaced). Multiple expressions are possible, _n_ starts with 0. |
-| `FILTER_REFS_BLACKLIST_n`     |          |                           | A regular expression that is required _NOT_ to match the ref name (pathNamespaced). Multiple expressions are possible, _n_ starts with 0. |
-| `STORAGE_PATH`                |          | `~/.gitlab-panorama`      | Path to a directory, where the pipelines are stored. If empty, no pipelines will be stored. |
+| Variable                      | Required | Default value             | Description                                                                                                                                   |
+|-------------------------------|----------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| `GITLAB_TOKEN`                | YES      |                           | A gitlab [access token](https://gitlab.com/profile/personal_access_tokens). A token with scope API is required.                               |
+| `GITLAB_ENDPOINT`             |          | https://gitlab.com/api/v4 | GitLab API endpoint.                                                                                                                          |
+| `GITLAB_TIMEOUT`              |          | `20s`                     | Timeout for gitlab api requests.                                                                                                              |
+| `WEBHOOK_SECRET_TOKEN`        |          |                           | Increases security: https://docs.gitlab.com/ee/user/project/integrations/webhooks.html#secret-token                                           |
+| `INIT_COLLECT_FROM_GITLAB`    |          | true                      | Will query the pipelines once on service start.                                                                                               |
+| `INIT_LOAD_FROM_STORAGE`      |          | false                     | Will load the pipelines from a local storage-file. This has some implications, read below.                                                    |
+| `FILTER_PROJECTS_ALLOWLIST_n` |          | `.*`                      | A regular expression that is required to match the project name (pathNamespaced). Multiple expressions are possible, _n_ starts with 0.       |
+| `FILTER_PROJECTS_BLOCKLIST_n` |          |                           | A regular expression that is required _NOT_ to match the project name (pathNamespaced). Multiple expressions are possible, _n_ starts with 0. |
+| `FILTER_REFS_ALLOWLIST_n`     |          | `.*`                      | A regular expression that is required to match the ref name (pathNamespaced). Multiple expressions are possible, _n_ starts with 0.           |
+| `FILTER_REFS_BLOCKLIST_n`     |          |                           | A regular expression that is required _NOT_ to match the ref name (pathNamespaced). Multiple expressions are possible, _n_ starts with 0.     |
+| `STORAGE_PATH`                |          | `~/.gitlab-panorama`      | Path to a directory, where the pipelines are stored. If empty, no pipelines will be stored.                                                   |
 
 
 ## Storage

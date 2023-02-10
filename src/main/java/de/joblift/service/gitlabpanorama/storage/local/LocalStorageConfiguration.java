@@ -11,6 +11,8 @@ import de.galan.commons.util.Sugar;
 
 import lombok.Data;
 
+import javax.annotation.Nullable;
+
 
 /**
  * Local storage configuration
@@ -20,6 +22,7 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "storage")
 public class LocalStorageConfiguration {
 
+	@Nullable
 	private String path;
 
 	public LocalStorageConfiguration(String path) {

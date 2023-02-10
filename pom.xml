@@ -14,7 +14,7 @@
 		<maven.compiler.release>17</maven.compiler.release>
 
 		<java.version>17</java.version>
-		<library.checkstyle.version>8.29</library.checkstyle.version>
+		<library.checkstyle.version>9.3</library.checkstyle.version>
 		<plugin.checkstyle.version>3.2.1</plugin.checkstyle.version>
 		<enforced.maven.version>3.8</enforced.maven.version>
 		<enforced.java.version>17</enforced.java.version>
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>de.galan</groupId>
 			<artifactId>commons</artifactId>
-			<version>2.0.1</version>
+			<version>2.0.2</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.validation</groupId>

@@ -93,16 +93,12 @@ public class ShellResource {
 			return Color.BLUE;
 		}
 
-		switch (pair.getCurrent().getStatus()) {
-			case success:
-				return Color.GREEN;
-			case failed:
-				return Color.RED;
-			case skipped:
-				return Color.WHITE;
-			default:
-				return Color.MAGENTA;
-		}
+		return switch (pair.getCurrent().getStatus()) {
+			case success -> Color.GREEN;
+			case failed -> Color.RED;
+			case skipped -> Color.WHITE;
+			default -> Color.MAGENTA;
+		};
 
 	}
 

@@ -11,7 +11,7 @@ import de.joblift.service.gitlabpanorama.storage.local.LocalStorage;
 
 
 /**
- * Listenes to events, so the pipelines get stored for faster supply during bootstrap.
+ * Listen to events, so the pipelines get stored for faster supply during bootstrap.
  */
 @Component
 public class StorageListener {

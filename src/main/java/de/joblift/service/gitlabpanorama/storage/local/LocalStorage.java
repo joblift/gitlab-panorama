@@ -25,8 +25,7 @@ import lombok.AllArgsConstructor;
 public class LocalStorage implements Storage {
 
 	private final static String STATE_FILENAME = "pipeline-states.json";
-
-	private LocalStorageConfiguration configuration;
+	final LocalStorageConfiguration configuration;
 
 	@Override
 	public List<Pipeline> load() {

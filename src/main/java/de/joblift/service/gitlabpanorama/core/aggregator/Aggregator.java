@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Aggregator {
 
-	private PipelinesState state;
+	private final PipelinesState state;
 
 	public List<PipelinePair> getPipelines() {
 		List<PipelinePair> result = new ArrayList<>();

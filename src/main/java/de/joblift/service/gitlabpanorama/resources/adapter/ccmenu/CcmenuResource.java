@@ -28,6 +28,7 @@ public class CcmenuResource {
 
 	private Aggregator aggregator;
 
+
 	@RequestMapping(produces = {"application/xml"})
 	public String refresh() {
 		Say.info("Requesting {format}", "ccmenu");

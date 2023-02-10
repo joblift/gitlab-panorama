@@ -36,13 +36,13 @@ public class WebhookService {
 
 
 	private void processPipeline(WebhookEventPipeline event) {
-		GitlabPipelineComplete attribute = event.getAttributes();
-		Say.info("Processing pipeline webhook event id {}, ref {}", attribute.getId(), attribute.getRef());
+		GitlabPipelineComplete attributes = event.getAttributes();
+		Say.info("Processing pipeline webhook event id {}, ref {}", attributes.getId(), attributes.getRef());
 		try {
 			Retryable.retry(3).timeToWait("5s")
-				.message("Invalid response for pipeline webhook event id '" + attribute.getId() + "', ref '" + attribute.getRef() + "'")
+				.message("Invalid response for pipeline webhook event id '" + attributes.getId() + "', ref '" + attributes.getRef() + "'")
 				.call(() -> {
-					GitlabPipelineComplete fetched = client.retrievePipelineComplete(event.getProject(), attribute.getRef(), attribute.getId());
+					GitlabPipelineComplete fetched = client.retrievePipelineComplete(event.getProject(), attributes.getRef(), attributes.getId());
 					if (fetched == null) {
 						return null;
 					}
@@ -55,7 +55,7 @@ public class WebhookService {
 				});
 		}
 		catch (Exception ex) {
-			Say.error("Unable to recive pipeline for webhook event id {}, ref {}", ex, attribute.getId(), attribute.getRef());
+			Say.error("Unable to receive pipeline for webhook event id {}, ref {}", ex, attributes.getId(), attributes.getRef());
 		}
 	}
 

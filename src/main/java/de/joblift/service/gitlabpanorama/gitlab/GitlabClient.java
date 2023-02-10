@@ -4,10 +4,10 @@ import static java.nio.charset.StandardCharsets.*;
 import static java.util.Comparator.*;
 import static java.util.stream.Collectors.*;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -59,7 +59,7 @@ public class GitlabClient {
 		try (Response response = http.get()) {
 			requestCounter++;
 			GitlabProject[] projects = Mapper.get().readValue(response.getStreamAsString(), GitlabProject[].class);
-			List<GitlabProject> collect = Arrays.asList(projects).stream()
+			List<GitlabProject> collect = Arrays.stream(projects)
 				.filter(p -> filter.isProjectMatching(p.getPathNamespaced()))
 				.filter(GitlabProject::isJobsEnabled)
 				.collect(toList());
@@ -71,7 +71,7 @@ public class GitlabClient {
 		catch (Exception ex) {
 			Say.error("Failed retrieving projects from gitlab", ex);
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 
@@ -89,7 +89,7 @@ public class GitlabClient {
 		try (Response response = http.get()) {
 			requestCounter++;
 			GitlabPipelineMinimal[] pipelines = Mapper.get().readValue(response.getStreamAsString(), GitlabPipelineMinimal[].class);
-			List<GitlabPipelineMinimal> collect = Arrays.asList(pipelines).stream().peek(pipeline -> pipeline.setProject(project)).collect(toList());
+			List<GitlabPipelineMinimal> collect = Arrays.stream(pipelines).peek(pipeline -> pipeline.setProject(project)).collect(toList());
 			// identify the last states per ref, and add them to the result
 			ListMultimap<String, GitlabPipelineMinimal> index = Multimaps.index(collect, p -> p.getRef() + "/" + p.getStatus());
 			for (String key : index.keySet()) {
@@ -164,12 +164,7 @@ public class GitlabClient {
 
 
 	private String encUrl(String input) {
-		try {
-			return URLEncoder.encode(input, UTF_8.name());
-		}
-		catch (UnsupportedEncodingException ex) {
-			throw new RuntimeException(ex);
-		}
+		return URLEncoder.encode(input, UTF_8);
 	}
 
 }

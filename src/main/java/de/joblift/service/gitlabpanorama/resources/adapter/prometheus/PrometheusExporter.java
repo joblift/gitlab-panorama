@@ -36,18 +36,13 @@ public class PrometheusExporter {
 
 
 	protected String stateToValue(PipelinePair pair) {
-		switch (pair.getCurrent().getStatus()) {
-			case success:
-				return "0";
-			case skipped:
-				return "1";
-			case canceled:
-				return "2";
-			case failed:
-				return "10";
-			default:
-				return "-1";
-		}
+		return switch (pair.getCurrent().getStatus()) {
+			case success -> "0";
+			case skipped -> "1";
+			case canceled -> "2";
+			case failed -> "10";
+			default -> "-1";
+		};
 	}
 
 }

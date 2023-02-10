@@ -39,7 +39,7 @@ public class Initializer {
 		eventbus.register(state); // register this instance with the eventbus so it receives any events
 
 		if (configuration.isLoadFromStorage()) {
-			load().stream().forEach(eventbus::post);
+			load().forEach(eventbus::post);
 		}
 		if (configuration.isCollectFromGitlab()) {
 			new Thread(() -> {
@@ -51,12 +51,11 @@ public class Initializer {
 
 
 	protected List<Pipeline> load() {
-		List<Pipeline> result = storage.load().stream()
+		return storage.load().stream()
 			.filter(p -> !p.hasActivity())
 			.filter(p -> filter.isProjectMatching(p.getProject().getPathNamespaced()))
 			.filter(p -> filter.isRefMatching(p.getRef()))
 			.collect(toList());
-		return result;
 	}
 
 }

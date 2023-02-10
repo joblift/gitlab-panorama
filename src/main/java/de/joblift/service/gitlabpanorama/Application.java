@@ -10,7 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 public class Application {
 
 	public static void main(String[] args) {
-		System.setProperty("spring.main.banner-mode", "off");
 		SpringApplication.run(Application.class, args);
 	}
 

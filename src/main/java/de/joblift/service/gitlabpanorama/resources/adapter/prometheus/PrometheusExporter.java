@@ -3,7 +3,6 @@ package de.joblift.service.gitlabpanorama.resources.adapter.prometheus;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,17 +10,18 @@ import de.galan.commons.logging.Say;
 import de.joblift.service.gitlabpanorama.core.aggregator.Aggregator;
 import de.joblift.service.gitlabpanorama.core.aggregator.PipelinePair;
 
+import lombok.AllArgsConstructor;
+
 
 /**
  * Metrics adapter for a prometheus scraper
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/adapter/prometheus")
 public class PrometheusExporter {
 
-	@Autowired
-	Aggregator aggregator;
-
+	private Aggregator aggregator;
 
 	@RequestMapping(produces = {"text/plain"})
 	public String bash() {

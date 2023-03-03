@@ -1,18 +1,18 @@
 package de.joblift.service.gitlabpanorama.filter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import lombok.AllArgsConstructor;
 
 
 /**
  * Checks if the given entity (project, ref) is matching the specified filter configuration.
  */
 @Component
+@AllArgsConstructor
 public class ResourceMatcher {
 
-	@Autowired
-	FilterConfiguration configuration = new FilterConfiguration();
-
+	private FilterConfiguration configuration;
 
 	public boolean isProjectMatching(String project) {
 		return matches(project, configuration.getProjects());

@@ -10,10 +10,13 @@ import java.util.List;
 import de.joblift.service.gitlabpanorama.core.models.Pipeline;
 import de.joblift.service.gitlabpanorama.core.models.Status;
 
+import lombok.Getter;
+
 
 /**
  * Groups Pipelines for a ref by status
  */
+@Getter
 public class PipelinePair {
 
 	String name;
@@ -21,7 +24,6 @@ public class PipelinePair {
 
 	Pipeline active;
 	Pipeline current;
-
 
 	public PipelinePair(Pipeline... pipelines) {
 		name = pipelines[0].getProject().getName();
@@ -40,21 +42,6 @@ public class PipelinePair {
 	}
 
 
-	public String getName() {
-		return name;
-	}
-
-
-	public String getRef() {
-		return ref;
-	}
-
-
-	public Pipeline getCurrent() {
-		return current;
-	}
-
-
 	public boolean isRunning() {
 		return active != null && active.hasActivity();
 	}
@@ -62,11 +49,6 @@ public class PipelinePair {
 
 	public Status getStatus() {
 		return ((current != null) ? current : active).getStatus();
-	}
-
-
-	public Pipeline getActive() {
-		return active;
 	}
 
 

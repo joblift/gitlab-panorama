@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Multimap;
@@ -16,16 +15,17 @@ import com.google.common.collect.Multimaps;
 import de.joblift.service.gitlabpanorama.core.models.Pipeline;
 import de.joblift.service.gitlabpanorama.core.state.PipelinesState;
 
+import lombok.AllArgsConstructor;
+
 
 /**
  * Provides a joined view on the project/ref combinations.
  */
 @Service
+@AllArgsConstructor
 public class Aggregator {
 
-	@Autowired
-	PipelinesState state;
-
+	private PipelinesState state;
 
 	public List<PipelinePair> getPipelines() {
 		List<PipelinePair> result = new ArrayList<>();

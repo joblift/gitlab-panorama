@@ -5,7 +5,6 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Stopwatch;
@@ -19,19 +18,16 @@ import de.joblift.service.gitlabpanorama.gitlab.model.GitlabPipelineComplete;
 import de.joblift.service.gitlabpanorama.gitlab.model.GitlabPipelineMinimal;
 import de.joblift.service.gitlabpanorama.gitlab.model.GitlabProject;
 
+import lombok.AllArgsConstructor;
+
 
 @Component
+@AllArgsConstructor
 public class GitlabFullstateCollector {
 
-	@Autowired
-	GitlabClient client;
-
-	@Autowired
-	EventBus eventbus;
-
-	@Autowired
-	ResourceMatcher filter;
-
+	private GitlabClient client;
+	private EventBus eventbus;
+	private ResourceMatcher filter;
 
 	public void refresh() {
 		Stopwatch watch = Stopwatch.createStarted();

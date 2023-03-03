@@ -1,6 +1,5 @@
 package de.joblift.service.gitlabpanorama.core.state;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.eventbus.EventBus;
@@ -17,17 +16,14 @@ import de.joblift.service.gitlabpanorama.storage.local.LocalStorage;
 @Component
 public class StorageListener {
 
-	@Autowired
-	LocalStorage storage;
-
-	@Autowired
-	PipelinesState state;
+	private LocalStorage storage;
+	private PipelinesState state;
 
 	private boolean store = false;
 
-
-	@Autowired
-	public StorageListener(EventBus eventBus) {
+	public StorageListener(LocalStorage storage, PipelinesState state, EventBus eventBus) {
+		this.storage = storage;
+		this.state = state;
 		eventBus.register(this); // register this instance with the eventbus so it receives any events
 	}
 

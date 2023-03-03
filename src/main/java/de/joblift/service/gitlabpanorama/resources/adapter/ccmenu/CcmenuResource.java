@@ -5,7 +5,6 @@ import static java.nio.charset.StandardCharsets.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
@@ -16,17 +15,18 @@ import de.joblift.service.gitlabpanorama.core.aggregator.PipelinePair;
 import de.joblift.service.gitlabpanorama.core.models.Pipeline;
 import de.joblift.service.gitlabpanorama.core.models.Status;
 
+import lombok.AllArgsConstructor;
+
 
 /**
  * Provides an endpoint for ccmenu-compatible clients.
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/adapter/ccmenu")
 public class CcmenuResource {
 
-	@Autowired
-	Aggregator aggregator;
-
+	private Aggregator aggregator;
 
 	@RequestMapping(produces = {"application/xml"})
 	public String refresh() {

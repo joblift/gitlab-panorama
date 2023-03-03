@@ -1,6 +1,5 @@
 package de.joblift.service.gitlabpanorama.resources.webhook;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.eventbus.EventBus;
@@ -14,15 +13,15 @@ import de.joblift.service.gitlabpanorama.resources.webhook.models.WebhookEvent;
 import de.joblift.service.gitlabpanorama.resources.webhook.models.WebhookEventPipeline;
 import de.joblift.service.gitlabpanorama.resources.webhook.models.WebhookEventPush;
 
+import lombok.AllArgsConstructor;
+
 
 @Service
+@AllArgsConstructor
 public class WebhookService {
 
-	@Autowired
-	EventBus eventbus;
-	@Autowired
-	GitlabClient client;
-
+	private EventBus eventbus;
+	private GitlabClient client;
 
 	public void process(WebhookEvent event) {
 		new Thread(() -> {

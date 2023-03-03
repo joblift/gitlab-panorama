@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ListMultimap;
@@ -31,18 +30,15 @@ import de.joblift.service.gitlabpanorama.util.Mapper;
 @Component
 public class GitlabClient {
 
-	long requestCounter = 0;
+	private Boolean filterTags = true;
+	private long requestCounter = 0;
 
-	@Autowired
-	GitlabConfiguration configuration = new GitlabConfiguration();
+	private GitlabConfiguration configuration;
+	private ResourceMatcher filter;
 
-	Boolean filterTags = true;
-
-	@Autowired
-	ResourceMatcher filter;
-
-
-	public GitlabClient() {
+	public GitlabClient(GitlabConfiguration configuration, ResourceMatcher filter) {
+		this.configuration = configuration;
+		this.filter = filter;
 		Flux.setDefaultTimeoutRead(configuration.getTimeout());
 	}
 

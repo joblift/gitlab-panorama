@@ -1,39 +1,27 @@
 package de.joblift.service.gitlabpanorama.filter;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
+
+import de.galan.commons.util.Sugar;
+
+import lombok.Data;
 
 
 /**
  * Blacklist/Whitelist Configuration for the filter
  */
-@Configuration
+@Data
 @Validated
 @ConfigurationProperties(prefix = "filter")
 public class FilterConfiguration {
 
-	private FilterLists projects = new FilterLists();
-	private FilterLists refs = new FilterLists();
+	private FilterLists projects;
+	private FilterLists refs;
 
-
-	public FilterLists getProjects() {
-		return projects;
-	}
-
-
-	public void setProjects(FilterLists projects) {
-		this.projects = projects;
-	}
-
-
-	public FilterLists getRefs() {
-		return refs;
-	}
-
-
-	public void setRefs(FilterLists refs) {
-		this.refs = refs;
+	public FilterConfiguration(FilterLists projects, FilterLists refs) {
+		this.projects = Sugar.first(projects, new FilterLists());
+		this.refs = Sugar.first(refs, new FilterLists());
 	}
 
 }

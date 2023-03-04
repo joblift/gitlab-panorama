@@ -19,7 +19,7 @@ The project is available as docker image and can be easily started:
 docker run --rm -it -p 8080:8080 -e "GITLAB_TOKEN=<your api token>" joblift/gitlab-panorama:latest
 ```
 
-A healthcheck for liveness or readiness probes is available at `/ping`.
+A healthcheck for liveness or readiness probes is via [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/2.5.6/reference/html/actuator.html).
 
 # Configuration
 

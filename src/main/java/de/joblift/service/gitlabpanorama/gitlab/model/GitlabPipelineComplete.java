@@ -6,10 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.joblift.service.gitlabpanorama.core.models.Pipeline;
 
+import lombok.Data;
+
 
 /**
  * Used by /projects/:id/pipelines/:pipeline_id
  */
+@Data
 public class GitlabPipelineComplete extends GitlabPipelineMinimal {
 
 	@JsonProperty
@@ -27,8 +30,7 @@ public class GitlabPipelineComplete extends GitlabPipelineMinimal {
 	private Long duration; // seconds
 
 	@JsonProperty
-	GitlabUser user;
-
+	private GitlabUser user;
 
 	public Pipeline toPipeline() {
 		Pipeline result = new Pipeline();
@@ -46,76 +48,6 @@ public class GitlabPipelineComplete extends GitlabPipelineMinimal {
 		result.setFinished(getFinished());
 
 		return result;
-	}
-
-
-	public boolean isTag() {
-		return tag;
-	}
-
-
-	public void setTag(boolean tag) {
-		this.tag = tag;
-	}
-
-
-	public Instant getCreated() {
-		return created;
-	}
-
-
-	public void setCreated(Instant created) {
-		this.created = created;
-	}
-
-
-	public Instant getUpdated() {
-		return updated;
-	}
-
-
-	public void setUpdated(Instant updated) {
-		this.updated = updated;
-	}
-
-
-	public Instant getStarted() {
-		return started;
-	}
-
-
-	public void setStarted(Instant started) {
-		this.started = started;
-	}
-
-
-	public Instant getFinished() {
-		return finished;
-	}
-
-
-	public void setFinished(Instant finished) {
-		this.finished = finished;
-	}
-
-
-	public Long getDuration() {
-		return duration;
-	}
-
-
-	public void setDuration(Long duration) {
-		this.duration = duration;
-	}
-
-
-	public GitlabUser getUser() {
-		return user;
-	}
-
-
-	public void setUser(GitlabUser user) {
-		this.user = user;
 	}
 
 }

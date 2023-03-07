@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import de.galan.commons.logging.Say;
@@ -15,18 +14,18 @@ import de.joblift.service.gitlabpanorama.core.models.Pipeline;
 import de.joblift.service.gitlabpanorama.storage.Storage;
 import de.joblift.service.gitlabpanorama.util.Mapper;
 
+import lombok.AllArgsConstructor;
+
 
 /**
  * Storage on a local path
  */
 @Component
+@AllArgsConstructor
 public class LocalStorage implements Storage {
 
-	@Autowired
-	LocalStorageConfiguration configuration;
-
 	private final static String STATE_FILENAME = "pipeline-states.json";
-
+	final LocalStorageConfiguration configuration;
 
 	@Override
 	public List<Pipeline> load() {

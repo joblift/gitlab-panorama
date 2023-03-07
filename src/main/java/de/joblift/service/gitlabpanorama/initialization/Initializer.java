@@ -4,9 +4,6 @@ import static java.util.stream.Collectors.*;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.eventbus.EventBus;
@@ -18,39 +15,31 @@ import de.joblift.service.gitlabpanorama.filter.ResourceMatcher;
 import de.joblift.service.gitlabpanorama.gitlab.GitlabFullstateCollector;
 import de.joblift.service.gitlabpanorama.storage.local.LocalStorage;
 
+import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
+
 
 /**
- * Initialization accros several classes has to be performed in specific order. Therefore the PostConstruct is unified
+ * Initialization across several classes has to be performed in specific order. Therefore the PostConstruct is unified
  * in a single place.
  */
 @Component
+@AllArgsConstructor
 public class Initializer {
 
-	@Autowired
-	InitializationConfiguration configuration;
-
-	@Autowired
-	EventBus eventbus;
-
-	@Autowired
-	GitlabFullstateCollector collector;
-
-	@Autowired
-	LocalStorage storage;
-
-	@Autowired
-	ResourceMatcher filter;
-
-	@Autowired
-	PipelinesState state;
-
+	private InitializationConfiguration configuration;
+	private EventBus eventbus;
+	private GitlabFullstateCollector collector;
+	private LocalStorage storage;
+	private ResourceMatcher filter;
+	private PipelinesState state;
 
 	@PostConstruct
 	public void init() {
 		eventbus.register(state); // register this instance with the eventbus so it receives any events
 
 		if (configuration.isLoadFromStorage()) {
-			load().stream().forEach(eventbus::post);
+			load().forEach(eventbus::post);
 		}
 		if (configuration.isCollectFromGitlab()) {
 			new Thread(() -> {
@@ -62,12 +51,11 @@ public class Initializer {
 
 
 	protected List<Pipeline> load() {
-		List<Pipeline> result = storage.load().stream()
+		return storage.load().stream()
 			.filter(p -> !p.hasActivity())
 			.filter(p -> filter.isProjectMatching(p.getProject().getPathNamespaced()))
 			.filter(p -> filter.isRefMatching(p.getRef()))
 			.collect(toList());
-		return result;
 	}
 
 }

@@ -9,55 +9,55 @@ import com.google.common.collect.Lists;
 
 
 /**
- * Whitelist/Blacklist configuration.
+ * Allowlist/Blocklist configuration.
  */
 public class FilterLists {
 
-	private List<String> whitelist = Lists.newArrayList(".*");
-	private List<String> blacklist = Lists.newArrayList();
-	private List<Pattern> whitelistPattern;
-	private List<Pattern> blacklistPattern;
+	private List<String> allowlist = Lists.newArrayList(".*");
+	private List<String> blocklist = Lists.newArrayList();
+	private List<Pattern> allowlistPattern;
+	private List<Pattern> blocklistPattern;
 
 
 	@Override
 	public String toString() {
-		return "whitelists: " + whitelist + ", blacklists: " + blacklist;
+		return "allowlists: " + allowlist + ", blocklists: " + blocklist;
 	}
 
 
-	public List<String> getWhitelist() {
-		return whitelist;
+	public List<String> getAllowlist() {
+		return allowlist;
 	}
 
 
-	public void setWhitelist(List<String> whitelist) {
-		this.whitelist = whitelist;
+	public void setAllowlist(List<String> Allowlist) {
+		this.allowlist = Allowlist;
 	}
 
 
-	public List<Pattern> getWhitelistPattern() {
-		if (whitelistPattern == null) {
-			whitelistPattern = whitelist.stream().map(Pattern::compile).collect(toList());
+	public List<Pattern> getAllowlistPattern() {
+		if (allowlistPattern == null) {
+			allowlistPattern = allowlist.stream().map(Pattern::compile).collect(toList());
 		}
-		return whitelistPattern;
+		return allowlistPattern;
 	}
 
 
-	public List<String> getBlacklist() {
-		return blacklist;
+	public List<String> getBlocklist() {
+		return blocklist;
 	}
 
 
-	public void setBlacklist(List<String> blacklist) {
-		this.blacklist = blacklist;
+	public void setBlocklist(List<String> Blocklist) {
+		this.blocklist = Blocklist;
 	}
 
 
-	public List<Pattern> getBlacklistPattern() {
-		if (blacklistPattern == null) {
-			blacklistPattern = blacklist.stream().map(Pattern::compile).collect(toList());
+	public List<Pattern> getBlocklistPattern() {
+		if (blocklistPattern == null) {
+			blocklistPattern = blocklist.stream().map(Pattern::compile).collect(toList());
 		}
-		return blacklistPattern;
+		return blocklistPattern;
 	}
 
 }

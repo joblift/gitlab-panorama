@@ -1,6 +1,5 @@
 package de.joblift.service.gitlabpanorama.resources.webhook;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.eventbus.EventBus;
@@ -14,15 +13,15 @@ import de.joblift.service.gitlabpanorama.resources.webhook.models.WebhookEvent;
 import de.joblift.service.gitlabpanorama.resources.webhook.models.WebhookEventPipeline;
 import de.joblift.service.gitlabpanorama.resources.webhook.models.WebhookEventPush;
 
+import lombok.AllArgsConstructor;
+
 
 @Service
+@AllArgsConstructor
 public class WebhookService {
 
-	@Autowired
-	EventBus eventbus;
-	@Autowired
-	GitlabClient client;
-
+	private EventBus eventbus;
+	private GitlabClient client;
 
 	public void process(WebhookEvent event) {
 		new Thread(() -> {
@@ -37,13 +36,16 @@ public class WebhookService {
 
 
 	private void processPipeline(WebhookEventPipeline event) {
-		GitlabPipelineComplete attribute = event.getAttributes();
-		Say.info("Processing pipeline webhook event id {}, ref {}", attribute.getId(), attribute.getRef());
+		GitlabPipelineComplete attributes = event.getAttributes();
+		Say.info("Processing pipeline webhook event id {}, ref {}", attributes.getId(), attributes.getRef());
 		try {
 			Retryable.retry(3).timeToWait("5s")
-				.message("Invalid response for pipeline webhook event id '" + attribute.getId() + "', ref '" + attribute.getRef() + "'")
+				.message("Invalid response for pipeline webhook event id '" + attributes.getId() + "', ref '" + attributes.getRef() + "'")
 				.call(() -> {
-					GitlabPipelineComplete fetched = client.retrievePipelineComplete(event.getProject(), attribute.getRef(), attribute.getId());
+					GitlabPipelineComplete fetched = client.retrievePipelineComplete(event.getProject(), attributes.getRef(), attributes.getId());
+					if (fetched == null) {
+						return null;
+					}
 					// debugging invalid events
 					if (fetched.getId() == null) {
 						throw new RuntimeException("Invalid response for webhook event");
@@ -53,7 +55,7 @@ public class WebhookService {
 				});
 		}
 		catch (Exception ex) {
-			Say.error("Unable to recive pipeline for webhook event id {}, ref {}", ex, attribute.getId(), attribute.getRef());
+			Say.error("Unable to receive pipeline for webhook event id {}, ref {}", ex, attributes.getId(), attributes.getRef());
 		}
 	}
 

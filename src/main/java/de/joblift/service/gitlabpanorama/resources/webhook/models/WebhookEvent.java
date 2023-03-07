@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
+import lombok.Getter;
+import lombok.Setter;
+
 
 /** See https://docs.gitlab.com/ee/user/project/integrations/webhooks.html */
 @JsonTypeInfo(use = Id.NAME, property = "object_kind", include = As.PROPERTY)
@@ -13,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 	@JsonSubTypes.Type(value = WebhookEventPipeline.class, name = WebhookEvent.TYPE_PIPELINE),
 	@JsonSubTypes.Type(value = WebhookEventPush.class, name = WebhookEvent.TYPE_PUSH)
 })
+@Getter
+@Setter
 public abstract class WebhookEvent {
 
 	public final static String TYPE_PIPELINE = "pipeline";
@@ -22,17 +27,6 @@ public abstract class WebhookEvent {
 	// why is this field not set from jackson?
 	@JsonProperty("object_kind")
 	private String type;
-
-
-	public String getType() {
-		return type;
-	}
-
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 
 	@Override
 	public String toString() {

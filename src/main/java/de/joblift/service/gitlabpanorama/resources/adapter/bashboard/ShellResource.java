@@ -2,13 +2,11 @@ package de.joblift.service.gitlabpanorama.resources.adapter.bashboard;
 
 import static java.util.stream.Collectors.*;
 import static org.apache.commons.lang3.StringUtils.*;
-import static org.fusesource.jansi.Ansi.ansi;
-import static org.fusesource.jansi.Ansi.Color;
+import static org.fusesource.jansi.Ansi.*;
 
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,26 +19,27 @@ import de.joblift.service.gitlabpanorama.core.aggregator.Aggregator;
 import de.joblift.service.gitlabpanorama.core.aggregator.PipelinePair;
 import de.joblift.service.gitlabpanorama.core.models.Status;
 
+import lombok.AllArgsConstructor;
+
 
 /**
  * Displays the state for the pipelines as shell-compatible output. Bashboard. Best used with watch, eg:</br>
  * <code>watch --color -t 'curl -s &lt;host&gt;:&lt;port&gt;/api/adapter/shell'</code>
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/adapter/shell")
 public class ShellResource {
 
-	@Autowired
-	Aggregator aggregator;
-
+	private Aggregator aggregator;
 
 	@RequestMapping(produces = {"text/plain"})
 	public String shell(@RequestParam(defaultValue = "true") Boolean dots,
-		@RequestParam(defaultValue = EMPTY) String filterStatus,
-		@RequestParam(defaultValue = "true") Boolean refs,
-		@RequestParam(defaultValue = "true") Boolean lists,
-		@RequestParam(defaultValue = ", ") String delimiterProjects,
-		@RequestParam(defaultValue = "\n") String delimiterLists) {
+			@RequestParam(defaultValue = EMPTY) String filterStatus,
+			@RequestParam(defaultValue = "true") Boolean refs,
+			@RequestParam(defaultValue = "true") Boolean lists,
+			@RequestParam(defaultValue = ", ") String delimiterProjects,
+			@RequestParam(defaultValue = "\n") String delimiterLists) {
 		Say.info("Requesting {format}", "bash");
 		List<PipelinePair> pipelines = aggregator.getPipelines();
 		StringBuilder builder = new StringBuilder();
@@ -94,16 +93,12 @@ public class ShellResource {
 			return Color.BLUE;
 		}
 
-		switch (pair.getCurrent().getStatus()) {
-			case success:
-				return Color.GREEN;
-			case failed:
-				return Color.RED;
-			case skipped:
-				return Color.WHITE;
-			default:
-				return Color.MAGENTA;
-		}
+		return switch (pair.getCurrent().getStatus()) {
+			case success -> Color.GREEN;
+			case failed -> Color.RED;
+			case skipped -> Color.WHITE;
+			default -> Color.MAGENTA;
+		};
 
 	}
 

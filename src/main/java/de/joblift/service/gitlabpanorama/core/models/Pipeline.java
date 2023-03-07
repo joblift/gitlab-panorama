@@ -6,10 +6,15 @@ import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 /**
  * Internal pipeline representation
  */
+@Data
+@NoArgsConstructor
 public class Pipeline {
 
 	private Project project;
@@ -25,7 +30,6 @@ public class Pipeline {
 	private Instant updated;
 	private Instant started;
 	private Instant finished;
-
 
 	@Override
 	public String toString() {
@@ -55,116 +59,6 @@ public class Pipeline {
 			return first;
 		}
 		return when(first).after(second) ? first : second;
-	}
-
-
-	public Project getProject() {
-		return project;
-	}
-
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
-
-
-	public Long getId() {
-		return id;
-	}
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-	public String getUrl() {
-		return url;
-	}
-
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-
-	public Status getStatus() {
-		return status;
-	}
-
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-
-	public String getRef() {
-		return ref;
-	}
-
-
-	public void setRef(String ref) {
-		this.ref = ref;
-	}
-
-
-	public User getUser() {
-		return user;
-	}
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-
-	public boolean isTag() {
-		return tag;
-	}
-
-
-	public void setTag(boolean tag) {
-		this.tag = tag;
-	}
-
-
-	public Instant getCreated() {
-		return created;
-	}
-
-
-	public void setCreated(Instant created) {
-		this.created = created;
-	}
-
-
-	public Instant getUpdated() {
-		return updated;
-	}
-
-
-	public void setUpdated(Instant updated) {
-		this.updated = updated;
-	}
-
-
-	public Instant getStarted() {
-		return started;
-	}
-
-
-	public void setStarted(Instant started) {
-		this.started = started;
-	}
-
-
-	public Instant getFinished() {
-		return finished;
-	}
-
-
-	public void setFinished(Instant finished) {
-		this.finished = finished;
 	}
 
 
